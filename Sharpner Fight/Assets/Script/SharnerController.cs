@@ -8,7 +8,7 @@ public class SharnerController : MonoBehaviour
     [SerializeField] Transform redForcePoint, blueForcePoint;
     [SerializeField] GameObject collisionEffect;
     [SerializeField] AudioSource slideSound, collideSound;
-    private bool redSharpnerHit, blueSharpnerHit;
+    private bool redSharpnerHit, blueSharpnerHit, comActivate;
     private RaycastHit2D hit;
     private float scale;
     private byte turn;
@@ -76,13 +76,14 @@ public class SharnerController : MonoBehaviour
             blueSharpner.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             redSharpner.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         }
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !Ground.isGameOver)
         {
             hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward);
             if (hit.collider)
             {
-                if ((hit.transform.name == "Red") && (turn == 1) && !Ground.isGameOver) redSharpnerHit = true;
-                else if ((hit.transform.name == "Blue") && (turn == 2) && !Ground.isGameOver) blueSharpnerHit = true;
+                if ((hit.transform.name == "Red") && (turn == 1)) redSharpnerHit = true;
+                else if ((hit.transform.name == "Blue") && (turn == 2) && (Menu.player == 2)) blueSharpnerHit = true;
+                if (Menu.player == 1) comActivate = true;
                
                 if(redSharpnerHit)
                 {
@@ -101,12 +102,29 @@ public class SharnerController : MonoBehaviour
                     blueDirectionLine.localRotation = Quaternion.Euler(0, 0, 0);
                     timerText.SetActive(false);
 
-                    if (hit.point.x < blueSharpner.transform.position.x) blueSharpner.transform.localRotation = Quaternion.Euler(blueDirectionLine.localRotation.x, redDirectionLine.localRotation.y, -hit.point.y * 20 + 90);
-                    else if (hit.point.x > blueSharpner.transform.position.x) blueSharpner.transform.localRotation = Quaternion.Euler(blueDirectionLine.localRotation.x, redDirectionLine.localRotation.y, hit.point.y * 20 - 90);
+                    if (hit.point.x < blueSharpner.transform.position.x) blueSharpner.transform.localRotation = Quaternion.Euler(blueDirectionLine.localRotation.x, blueDirectionLine.localRotation.y, -hit.point.y * 20 + 90);
+                    else if (hit.point.x > blueSharpner.transform.position.x) blueSharpner.transform.localRotation = Quaternion.Euler(blueDirectionLine.localRotation.x, blueDirectionLine.localRotation.y, hit.point.y * 20 - 90);
                     
                     scale = Vector2.Distance(blueSharpner.transform.position, hit.point) * 1.5f;
                     scale = Mathf.Clamp(scale, 0, 5);
                     blueDirectionLine.localScale = new Vector3(scale * 10, scale * 10, scale * 10);
+                }
+                if (comActivate)
+                {
+                    blueSharpnerHit = false;
+                    Vector2 targetPos = redSharpner.transform.position;
+                    Vector2 hitPointForCom = new Vector2(Random.Range(-targetPos.x, targetPos.x), Random.Range(-targetPos.y, targetPos.y));
+                    blueDirectionLine.localRotation = Quaternion.Euler(0, 0, 0);
+                    timerText.SetActive(false);
+
+                    if (hitPointForCom.x < blueSharpner.transform.position.x) blueSharpner.transform.localRotation = Quaternion.Euler(blueDirectionLine.localRotation.x, blueDirectionLine.localRotation.y, hitPointForCom.y * 20 + 90);
+                    else if (hitPointForCom.x > blueSharpner.transform.position.x) blueSharpner.transform.localRotation = Quaternion.Euler(blueDirectionLine.localRotation.x, blueDirectionLine.localRotation.y, +hitPointForCom.y * 20 - 90);
+
+                    scale = Vector2.Distance(blueSharpner.transform.position, hitPointForCom) * 1.5f;
+                    scale = Mathf.Clamp(scale, 0, 5);
+                    blueDirectionLine.localScale = new Vector3(scale * 10, scale * 10, scale * 10);
+
+                    Invoke("AddForceComSharpner", 1);
                 }
             }
         }
@@ -133,5 +151,15 @@ public class SharnerController : MonoBehaviour
                 turn = 1;
             }
         }
+    }
+
+    private void AddForceComSharpner()
+    {
+        slideSound.Play();
+        blueDirectionLine.localRotation = Quaternion.Euler(0, 0, 0);
+        blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * 70 * scale);
+        blueDirectionLine.localScale = Vector3.zero;
+        timer = 10;
+        turn = 1;
     }
 }

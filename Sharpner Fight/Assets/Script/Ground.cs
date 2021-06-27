@@ -41,4 +41,9 @@ public class Ground : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+    public void MenuButton()
+    {
+        SceneManager.LoadScene(0);
+    }
 }
