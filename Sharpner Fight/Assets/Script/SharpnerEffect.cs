@@ -2,19 +2,36 @@ using UnityEngine;
 
 public class SharpnerEffect : MonoBehaviour
 {
-    public static bool isSharpnerCollide;
+    [SerializeField] AudioSource collideSound;
+    [SerializeField] GameObject collisionEffect;
+    private bool collisionEffectAllow;
+
     [Header("Camera Shake")]
     private Vector3 cameraInitialPosition;
     private float shakeMagnetude = 0.04f, shakeTime = 0.2f;
     [SerializeField] Camera mainCamera;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void Start()
     {
-        if (collision.gameObject.tag == "Sharpner")
+        collisionEffectAllow = true;
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if((collision.gameObject.tag == "Sharpner") && collisionEffectAllow)
         {
-            isSharpnerCollide = true;
+            collisionEffectAllow = false;
+            Destroy(Instantiate(collisionEffect, collision.GetContact(0).point, Quaternion.identity), 0.4f);
+            if (collideSound.isPlaying) collideSound.Stop();
+            collideSound.Play();
             ShakeIt();
+            Invoke("AllowCollisionEffect", 1);
         }
+    }
+
+    private void AllowCollisionEffect()
+    {
+        collisionEffectAllow = true;
     }
 
     private void ShakeIt()

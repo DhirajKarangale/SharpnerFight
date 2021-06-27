@@ -293,7 +293,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 9fdd2ed40cf848c44b98aa1d3bf4e9f9, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.6
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -716,6 +716,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24a25732d5210734c8597f3b59b9afa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collideSound: {fileID: 175510257}
+  collisionEffect: {fileID: 6198003379055463540, guid: 7d07a72521845ea4b9f5305b97980a2e, type: 3}
   mainCamera: {fileID: 519420031}
 --- !u!1 &439146320
 GameObject:
@@ -1685,7 +1687,6 @@ GameObject:
   - component: {fileID: 861194537}
   - component: {fileID: 861194536}
   - component: {fileID: 861194538}
-  - component: {fileID: 861194539}
   m_Layer: 0
   m_Name: Blue
   m_TagString: Sharpner
@@ -1807,19 +1808,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &861194539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 861194534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24a25732d5210734c8597f3b59b9afa3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainCamera: {fileID: 519420031}
 --- !u!1 &905646457
 GameObject:
   m_ObjectHideFlags: 0
@@ -2027,9 +2015,7 @@ MonoBehaviour:
   blueDirectionLine: {fileID: 1017103106}
   redForcePoint: {fileID: 1862674787}
   blueForcePoint: {fileID: 677311058}
-  collisionEffect: {fileID: 6198003379055463540, guid: 7d07a72521845ea4b9f5305b97980a2e, type: 3}
   slideSound: {fileID: 4704271}
-  collideSound: {fileID: 175510257}
   playerText: {fileID: 905646459}
   timerText: {fileID: 1895884993}
 --- !u!1 &999323863
