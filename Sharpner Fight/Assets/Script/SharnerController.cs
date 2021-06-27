@@ -88,10 +88,10 @@ public class SharnerController : MonoBehaviour
                 {
                     redDirectionLine.localRotation = Quaternion.Euler(0, 0, 0);
                     timerText.SetActive(false);
+
                     if (hit.point.x < redSharpner.transform.position.x) redSharpner.transform.localRotation = Quaternion.Euler(redDirectionLine.localRotation.x, redDirectionLine.localRotation.y, -hit.point.y * 20 - 90);
                     else if (hit.point.x > redSharpner.transform.position.x) redSharpner.transform.localRotation = Quaternion.Euler(redDirectionLine.localRotation.x, redDirectionLine.localRotation.y, hit.point.y * 20 + 90);
-
-                    redDirectionLine.localRotation = Quaternion.Euler(redDirectionLine.localRotation.x, redDirectionLine.localRotation.y, -hit.point.y * 5);
+                   
                     scale = Vector2.Distance(redSharpner.transform.position, hit.point) * 1.5f;
                     scale = Mathf.Clamp(scale, 0, 5);
                     redDirectionLine.localScale = new Vector3(scale, scale, scale);
@@ -100,10 +100,10 @@ public class SharnerController : MonoBehaviour
                 {
                     blueDirectionLine.localRotation = Quaternion.Euler(0, 0, 0);
                     timerText.SetActive(false);
+
                     if (hit.point.x < blueSharpner.transform.position.x) blueSharpner.transform.localRotation = Quaternion.Euler(blueDirectionLine.localRotation.x, redDirectionLine.localRotation.y, -hit.point.y * 20 + 90);
                     else if (hit.point.x > blueSharpner.transform.position.x) blueSharpner.transform.localRotation = Quaternion.Euler(blueDirectionLine.localRotation.x, redDirectionLine.localRotation.y, hit.point.y * 20 - 90);
-
-                    blueDirectionLine.localRotation = Quaternion.Euler(blueDirectionLine.localRotation.x, blueDirectionLine.localRotation.y, -hit.point.y * 5);
+                    
                     scale = Vector2.Distance(blueSharpner.transform.position, hit.point) * 1.5f;
                     scale = Mathf.Clamp(scale, 0, 5);
                     blueDirectionLine.localScale = new Vector3(scale * 10, scale * 10, scale * 10);
@@ -115,7 +115,7 @@ public class SharnerController : MonoBehaviour
             if (turn == 1 && redSharpnerHit)
             {
                 slideSound.Play();
-                redDirectionLine.localRotation = Quaternion.Euler(0,0,0);
+                redDirectionLine.localRotation = Quaternion.Euler(0, 0, 0);
                 redSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(redForcePoint.position.x - redSharpner.transform.position.x, redForcePoint.position.y - redSharpner.transform.position.y, 0) * 70 * scale);
                 redSharpnerHit = false;
                 redDirectionLine.localScale = Vector3.zero;
