@@ -7,12 +7,13 @@ public class SharnerController : MonoBehaviour
     [SerializeField] Transform redDirectionLine, blueDirectionLine;
     [SerializeField] Transform redForcePoint, blueForcePoint;
     [SerializeField] AudioSource slideSound;
-    public bool redSharpnerHit, blueSharpnerHit;
+    private bool redSharpnerHit, blueSharpnerHit;
     private RaycastHit2D hit;
     private float scale;
-    public byte turn;
+    private byte turn;
     private float timer;
     [SerializeField] Text playerText;
+    [SerializeField] Text debugText;
     [SerializeField] Text singlePlayerText;
     [SerializeField] Text difficultyText;
     [SerializeField] GameObject timerText;
@@ -44,6 +45,7 @@ public class SharnerController : MonoBehaviour
 
     private void Update()
     {
+        debugText.text = Camera.main.orthographicSize.ToString();
         if((turn == 1) && !GameManager.isGameOver && !redSharpnerHit)
         {
             timerText.SetActive(true);
