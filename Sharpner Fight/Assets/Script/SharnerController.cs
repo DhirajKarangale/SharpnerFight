@@ -33,7 +33,7 @@ public class SharnerController : MonoBehaviour
             singlePlayerText.text = "Two Player";
             difficultyText.gameObject.SetActive(false);
         }
-        Ground.isGameOver = false;
+        GameManager.isGameOver = false;
         turn = 1;
         timer = 10;
         redSharpnerHit = false;
@@ -44,7 +44,7 @@ public class SharnerController : MonoBehaviour
 
     private void Update()
     {
-        if((turn == 1) && !Ground.isGameOver && !redSharpnerHit)
+        if((turn == 1) && !GameManager.isGameOver && !redSharpnerHit)
         {
             timerText.SetActive(true);
             playerText.gameObject.SetActive(true);
@@ -69,7 +69,7 @@ public class SharnerController : MonoBehaviour
                 else turn = 2;
             }
         }
-        if((turn == 2) && !Ground.isGameOver && !blueSharpnerHit && (Menu.player == 2))
+        if((turn == 2) && !GameManager.isGameOver && !blueSharpnerHit && (Menu.player == 2))
         {
             timerText.SetActive(true);
             playerText.gameObject.SetActive(true);
@@ -87,13 +87,13 @@ public class SharnerController : MonoBehaviour
             }
         }
 
-        if (Ground.isGameOver)
+        if (GameManager.isGameOver)
         {
             blueSharpner.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             redSharpner.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         }
 
-        if ((turn == 100) && !Ground.isGameOver)
+        if ((turn == 100) && !GameManager.isGameOver)
         {
             blueSharpnerHit = false;
             Vector3 rondomTargetPos;
@@ -111,7 +111,7 @@ public class SharnerController : MonoBehaviour
             else
             {
                 rondomTargetPos = redSharpner.transform.position;
-                scale = 4.5f;
+                scale = 4.75f;
             }
 
             Vector3 dir = rondomTargetPos - blueSharpner.transform.position;
@@ -122,7 +122,7 @@ public class SharnerController : MonoBehaviour
 
             Invoke("AddForceComSharpner", 0.5f);
         }
-        if (Input.GetMouseButton(0) && !Ground.isGameOver)
+        if (Input.GetMouseButton(0) && !GameManager.isGameOver)
         {
             hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward);
             if (hit.collider)

@@ -8,13 +8,24 @@ public class Menu : MonoBehaviour
     public static AudioSource bgMusic;
     [SerializeField] GameObject difficultyPanel;
     [SerializeField] GameObject menuPanel;
+    [SerializeField] GameObject quitPanel;
     [SerializeField] AudioSource buttonSound;
+    private bool isQuitPanelActivate;
 
     private void Awake()
     {
         bgMusic = GetComponent<AudioSource>();
         bgMusic.Play();
         DontDestroyOnLoad(bgMusic);
+    }
+
+    private void Update()
+    {
+        if(Input.GetKey(KeyCode.Escape))
+        {
+            if (isQuitPanelActivate) DesableQuitPanel();
+            else ActiveQuitPanel();
+        }
     }
 
     public void SinglePlayerButton()
@@ -26,6 +37,8 @@ public class Menu : MonoBehaviour
 
     public void TwoPlayerButton()
     {
+        menuPanel.SetActive(false);
+        difficultyPanel.SetActive(false);
         buttonSound.Play();
         player = 2;
         SceneManager.LoadScene(1);
@@ -74,6 +87,18 @@ public class Menu : MonoBehaviour
     {
         buttonSound.Play();
         difficultyPanel.SetActive(false);
+    }
+
+    public void ActiveQuitPanel()
+    {
+        isQuitPanelActivate = true;
+        quitPanel.SetActive(true);
+    }
+
+    public void DesableQuitPanel()
+    {
+        isQuitPanelActivate = false;
+        quitPanel.SetActive(false);
     }
 }
 
