@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
     public void PauseButton()
     {
         isPause = true;
-        if (bgMusic != null) bgMusic.Stop();
+        if (bgMusic != null) bgMusic.Pause();
         pauseScreen.SetActive(true);
         gameScreen.SetActive(false);
         Time.timeScale = 0;

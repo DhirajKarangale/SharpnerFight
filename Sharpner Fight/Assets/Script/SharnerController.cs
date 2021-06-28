@@ -101,17 +101,17 @@ public class SharnerController : MonoBehaviour
             if(Menu.difficulty == 1)
             {
                 rondomTargetPos = new Vector3(Random.Range(redSharpner.transform.position.x - 3, redSharpner.transform.position.x + 3), redSharpner.transform.position.y, redSharpner.transform.position.z);
-                scale = Random.Range(1, 3.75f);
+                scale = Random.Range(1, 2.8f);
             }
             else if (Menu.difficulty == 2)
             {
                 rondomTargetPos = redSharpner.transform.position;
-                scale = Random.Range(1.3f, 4.3f);
+                scale = Random.Range(1.2f, 4f);
             }
             else
             {
                 rondomTargetPos = redSharpner.transform.position;
-                scale = 4.6f;
+                scale = 4.5f;
             }
 
             Vector3 dir = rondomTargetPos - blueSharpner.transform.position;
@@ -164,7 +164,7 @@ public class SharnerController : MonoBehaviour
                 timer = 10;
                 turn = 0;
                 slideSound.Play();
-                redSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(redForcePoint.position.x - redSharpner.transform.position.x, redForcePoint.position.y - redSharpner.transform.position.y, 0) * 73 * scale);
+                redSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(redForcePoint.position.x - redSharpner.transform.position.x, redForcePoint.position.y - redSharpner.transform.position.y, 0) * 65 * scale);
                 redSharpnerHit = false;
                 redDirectionLine.localScale = Vector3.zero;
 
@@ -177,7 +177,7 @@ public class SharnerController : MonoBehaviour
                 turn = 0;
                 blueSharpnerHit = false;
                 slideSound.Play();
-                blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * 73 * scale);
+                blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * 65 * scale);
                 blueDirectionLine.localScale = Vector3.zero;
                 Invoke("ActivateTurn1", 1);
             }
@@ -188,7 +188,7 @@ public class SharnerController : MonoBehaviour
     {
         turn = 0;
         slideSound.Play();
-        blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * scale * 5);
+        blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * scale * 3.8f);
         blueDirectionLine.localScale = Vector3.zero;
         Invoke("ActivateTurn1", 1);
     }
