@@ -101,7 +101,7 @@ public class SharnerController : MonoBehaviour
             if(Menu.difficulty == 1)
             {
                 rondomTargetPos = new Vector3(Random.Range(redSharpner.transform.position.x - 3, redSharpner.transform.position.x + 3), redSharpner.transform.position.y, redSharpner.transform.position.z);
-                scale = Random.Range(1, 5);
+                scale = Random.Range(1, 3.75f);
             }
             else if (Menu.difficulty == 2)
             {
@@ -111,7 +111,7 @@ public class SharnerController : MonoBehaviour
             else
             {
                 rondomTargetPos = redSharpner.transform.position;
-                scale = 4.75f;
+                scale = 4.6f;
             }
 
             Vector3 dir = rondomTargetPos - blueSharpner.transform.position;
