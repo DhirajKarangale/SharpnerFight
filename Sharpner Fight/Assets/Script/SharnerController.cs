@@ -7,10 +7,10 @@ public class SharnerController : MonoBehaviour
     [SerializeField] Transform redDirectionLine, blueDirectionLine;
     [SerializeField] Transform redForcePoint, blueForcePoint;
     [SerializeField] AudioSource slideSound;
-    private bool redSharpnerHit, blueSharpnerHit;
+    public bool redSharpnerHit, blueSharpnerHit;
     private RaycastHit2D hit;
     private float scale;
-    private byte turn;
+    public byte turn;
     private float timer;
     [SerializeField] Text playerText;
     [SerializeField] Text singlePlayerText;
@@ -106,7 +106,7 @@ public class SharnerController : MonoBehaviour
             else if (Menu.difficulty == 2)
             {
                 rondomTargetPos = redSharpner.transform.position;
-                scale = Random.Range(1, 4);
+                scale = Random.Range(1.3f, 4.3f);
             }
             else
             {
@@ -129,7 +129,6 @@ public class SharnerController : MonoBehaviour
             {
                 if ((hit.transform.name == "Red") && (turn == 1)) redSharpnerHit = true;
                 else if ((hit.transform.name == "Blue") && (turn == 2) && (Menu.player == 2)) blueSharpnerHit = true;
-               
                 if(redSharpnerHit)
                 {
                     timerText.SetActive(false);

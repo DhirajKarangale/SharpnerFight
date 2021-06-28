@@ -6,12 +6,18 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] AudioSource dyeSound;
     [SerializeField] AudioSource buttonSound;
+    [SerializeField] AudioSource bgMusic;
     [SerializeField] GameObject winScreen;
     [SerializeField] GameObject gameScreen;
     [SerializeField] GameObject pauseScreen;
     [SerializeField] Text winPlayerText;
     public static bool isGameOver;
     private bool isPause;
+
+    private void Start()
+    {
+       if(bgMusic != null) bgMusic.Play();
+    }
 
     private void Update()
     {
@@ -20,21 +26,22 @@ public class GameManager : MonoBehaviour
             if (isPause) ResumeButton();
             else PauseButton();
         }
+
+        if ((bgMusic != null) && isGameOver) bgMusic.Stop();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Sharpner")
+        if ((collision.gameObject.tag == "Sharpner") && !isGameOver)
         {
-            Menu.bgMusic.Stop();
             dyeSound.Play();
             gameScreen.SetActive(false);
             Invoke("SetWinScreenActive", 1);
             isGameOver = true;
             collision.gameObject.transform.localScale = collision.gameObject.transform.localScale / 2;
-            if(collision.gameObject.transform.name == "Red")
+            if (collision.gameObject.transform.name == "Red")
             {
-                if(Menu.player == 1)
+                if (Menu.player == 1)
                 {
                     winPlayerText.color = Color.blue;
                     winPlayerText.text = "Com Wins";
@@ -60,13 +67,14 @@ public class GameManager : MonoBehaviour
 
     public void RestartButton()
     {
+        ResumeButton();
         buttonSound.Play();
-        Menu.bgMusic.Play();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void MenuButton()
     {
+        ResumeButton();
         buttonSound.Play();
         SceneManager.LoadScene(0);
     }
@@ -74,6 +82,7 @@ public class GameManager : MonoBehaviour
     public void PauseButton()
     {
         isPause = true;
+        if (bgMusic != null) bgMusic.Stop();
         pauseScreen.SetActive(true);
         gameScreen.SetActive(false);
         Time.timeScale = 0;
@@ -81,6 +90,7 @@ public class GameManager : MonoBehaviour
 
     public void ResumeButton()
     {
+        if (bgMusic != null) bgMusic.Play();
         isPause = false;
         pauseScreen.SetActive(false);
         gameScreen.SetActive(true);

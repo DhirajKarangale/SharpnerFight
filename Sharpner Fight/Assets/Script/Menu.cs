@@ -5,19 +5,11 @@ public class Menu : MonoBehaviour
 {
     public static byte player;
     public static byte difficulty;
-    public static AudioSource bgMusic;
     [SerializeField] GameObject difficultyPanel;
     [SerializeField] GameObject menuPanel;
     [SerializeField] GameObject quitPanel;
     [SerializeField] AudioSource buttonSound;
     private bool isQuitPanelActivate;
-
-    private void Awake()
-    {
-        bgMusic = GetComponent<AudioSource>();
-        bgMusic.Play();
-        DontDestroyOnLoad(bgMusic);
-    }
 
     private void Update()
     {
