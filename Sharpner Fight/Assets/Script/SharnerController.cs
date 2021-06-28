@@ -18,10 +18,9 @@ public class SharnerController : MonoBehaviour
     [SerializeField] Text difficultyText;
     [SerializeField] GameObject timerText;
 
-
     private void Start()
     {
-        if(Menu.player == 1)
+        if (Menu.player == 1)
         {
             difficultyText.gameObject.SetActive(true);
             singlePlayerText.text = "Single Player";
@@ -103,7 +102,7 @@ public class SharnerController : MonoBehaviour
             if(Menu.difficulty == 1)
             {
                 rondomTargetPos = new Vector3(Random.Range(redSharpner.transform.position.x - 3, redSharpner.transform.position.x + 3), redSharpner.transform.position.y, redSharpner.transform.position.z);
-                scale = Random.Range(1, 2.8f);
+                scale = Random.Range(1, 3f);
             }
             else if (Menu.difficulty == 2)
             {
@@ -190,7 +189,7 @@ public class SharnerController : MonoBehaviour
     {
         turn = 0;
         slideSound.Play();
-        blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * scale * 3.8f);
+        blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * scale * 5f);
         blueDirectionLine.localScale = Vector3.zero;
         Invoke("ActivateTurn1", 1);
     }

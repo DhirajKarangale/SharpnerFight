@@ -11,6 +11,7 @@ public class Menu : MonoBehaviour
     [SerializeField] AudioSource buttonSound;
     private bool isQuitPanelActivate;
 
+   
     private void Update()
     {
         if(Input.GetKey(KeyCode.Escape))
@@ -19,6 +20,7 @@ public class Menu : MonoBehaviour
             else ActiveQuitPanel();
         }
     }
+     
 
     public void SinglePlayerButton()
     {
