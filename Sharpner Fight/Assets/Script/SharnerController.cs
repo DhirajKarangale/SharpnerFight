@@ -13,7 +13,6 @@ public class SharnerController : MonoBehaviour
     private byte turn;
     private float timer;
     [SerializeField] Text playerText;
-    [SerializeField] Text debugText;
     [SerializeField] Text singlePlayerText;
     [SerializeField] Text difficultyText;
     [SerializeField] GameObject timerText;
@@ -44,7 +43,6 @@ public class SharnerController : MonoBehaviour
 
     private void Update()
     {
-        debugText.text = Camera.main.orthographicSize.ToString();
         if((turn == 1) && !GameManager.isGameOver && !redSharpnerHit)
         {
             timerText.SetActive(true);
@@ -165,7 +163,7 @@ public class SharnerController : MonoBehaviour
                 timer = 10;
                 turn = 0;
                 slideSound.Play();
-                redSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(redForcePoint.position.x - redSharpner.transform.position.x, redForcePoint.position.y - redSharpner.transform.position.y, 0) * 65 * scale);
+                redSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(redForcePoint.position.x - redSharpner.transform.position.x, redForcePoint.position.y - redSharpner.transform.position.y, 0) * 60 * scale);
                 redSharpnerHit = false;
                 redDirectionLine.localScale = Vector3.zero;
 
@@ -178,7 +176,7 @@ public class SharnerController : MonoBehaviour
                 turn = 0;
                 blueSharpnerHit = false;
                 slideSound.Play();
-                blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * 65 * scale);
+                blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * 60 * scale);
                 blueDirectionLine.localScale = Vector3.zero;
                 Invoke("ActivateTurn1", 1);
             }
@@ -189,7 +187,7 @@ public class SharnerController : MonoBehaviour
     {
         turn = 0;
         slideSound.Play();
-        blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * scale * 5f);
+        blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * scale * 20);
         blueDirectionLine.localScale = Vector3.zero;
         Invoke("ActivateTurn1", 1);
     }

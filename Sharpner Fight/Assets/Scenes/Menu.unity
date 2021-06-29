@@ -1472,6 +1472,7 @@ MonoBehaviour:
   difficultyPanel: {fileID: 476277396}
   menuPanel: {fileID: 1349559087}
   quitPanel: {fileID: 284946720}
+  loadingPng: {fileID: 571793008}
   buttonSound: {fileID: 1557252769}
 --- !u!1 &1113559332
 GameObject:

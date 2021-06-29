@@ -8,10 +8,15 @@ public class Menu : MonoBehaviour
     [SerializeField] GameObject difficultyPanel;
     [SerializeField] GameObject menuPanel;
     [SerializeField] GameObject quitPanel;
+    [SerializeField] GameObject loadingPng;
     [SerializeField] AudioSource buttonSound;
     private bool isQuitPanelActivate;
 
-   
+    private void Start()
+    {
+        loadingPng.SetActive(false);
+    }
+
     private void Update()
     {
         if(Input.GetKey(KeyCode.Escape))
@@ -31,6 +36,7 @@ public class Menu : MonoBehaviour
 
     public void TwoPlayerButton()
     {
+        loadingPng.SetActive(true);
         menuPanel.SetActive(false);
         difficultyPanel.SetActive(false);
         buttonSound.Play();
@@ -52,6 +58,7 @@ public class Menu : MonoBehaviour
 
     public void EasyButton()
     {
+        loadingPng.SetActive(true);
         menuPanel.SetActive(false);
         difficultyPanel.SetActive(false);
         buttonSound.Play();
@@ -61,6 +68,7 @@ public class Menu : MonoBehaviour
 
     public void MediumButton()
     {
+        loadingPng.SetActive(true);
         menuPanel.SetActive(false);
         difficultyPanel.SetActive(false);
         buttonSound.Play();
@@ -70,6 +78,7 @@ public class Menu : MonoBehaviour
 
     public void HardButton()
     {
+        loadingPng.SetActive(true);
         menuPanel.SetActive(false);
         difficultyPanel.SetActive(false);
         buttonSound.Play();
