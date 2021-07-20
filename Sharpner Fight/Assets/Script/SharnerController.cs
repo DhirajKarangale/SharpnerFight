@@ -99,8 +99,22 @@ public class SharnerController : MonoBehaviour
 
             if(Menu.difficulty == 1)
             {
-                rondomTargetPos = new Vector3(Random.Range(redSharpner.transform.position.x - 3, redSharpner.transform.position.x + 3), redSharpner.transform.position.y, redSharpner.transform.position.z);
-                scale = Random.Range(1, 3f);
+                float dis = Vector2.Distance(blueSharpner.transform.position, redSharpner.transform.position);
+                if (dis >= 5)
+                {
+                    rondomTargetPos = new Vector3(Random.Range(redSharpner.transform.position.x - 150, redSharpner.transform.position.x + 150), redSharpner.transform.position.y, redSharpner.transform.position.z);
+                    scale = Random.Range(1, 5f);
+                }
+                else if (dis >= 2)
+                {
+                    rondomTargetPos = new Vector3(Random.Range(redSharpner.transform.position.x - 2, redSharpner.transform.position.x + 2), redSharpner.transform.position.y, redSharpner.transform.position.z);
+                    scale = Random.Range(1, 3f);
+                }
+                else
+                {
+                    scale = 2.5f;
+                    rondomTargetPos = new Vector3(Random.Range(redSharpner.transform.position.x, redSharpner.transform.position.x), redSharpner.transform.position.y, redSharpner.transform.position.z);
+                }
             }
             else if (Menu.difficulty == 2)
             {
@@ -117,7 +131,7 @@ public class SharnerController : MonoBehaviour
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             blueSharpner.transform.rotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
 
-            blueDirectionLine.localScale = new Vector3(scale * 10, scale * 10, scale * 10);
+            blueDirectionLine.localScale = new Vector3(scale * 0.3f, scale * 0.3f, scale * 0.3f);
 
             Invoke("AddForceComSharpner", 0.5f);
         }
@@ -135,11 +149,11 @@ public class SharnerController : MonoBehaviour
 
                     var dir = hit.point - new Vector2(redSharpner.transform.position.x,redSharpner.transform.position.y);
                     float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                    redSharpner.transform.rotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
+                    redSharpner.transform.rotation = Quaternion.AngleAxis(angle + 270, Vector3.forward);
 
-                    scale = Vector2.Distance(redSharpner.transform.position, hit.point) * 1.5f;
-                    scale = Mathf.Clamp(scale, 0, 5);
-                    redDirectionLine.localScale = new Vector3(scale, scale, scale);
+                    scale = Vector2.Distance(redSharpner.transform.position, hit.point) * 0.5f;
+                    scale = Mathf.Clamp(scale, 0, 3);
+                    redDirectionLine.localScale = new Vector3(scale * 0.5f, scale * 0.5f, scale * 0.5f);
                 }
                 if(blueSharpnerHit)
                 {
@@ -150,9 +164,9 @@ public class SharnerController : MonoBehaviour
                     float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
                     blueSharpner.transform.rotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
 
-                    scale = Vector2.Distance(blueSharpner.transform.position, hit.point) * 1.5f;
-                    scale = Mathf.Clamp(scale, 0, 5);
-                    blueDirectionLine.localScale = new Vector3(scale * 10, scale * 10, scale * 10);
+                    scale = Vector2.Distance(blueSharpner.transform.position, hit.point) * 0.5f;
+                    scale = Mathf.Clamp(scale, 0, 3);
+                    blueDirectionLine.localScale = new Vector3(scale * 0.5f, scale * 0.5f, scale * 0.5f);
                 }
             }
         }
@@ -163,7 +177,7 @@ public class SharnerController : MonoBehaviour
                 timer = 10;
                 turn = 0;
                 slideSound.Play();
-                redSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(redForcePoint.position.x - redSharpner.transform.position.x, redForcePoint.position.y - redSharpner.transform.position.y, 0) * 60 * scale);
+                redSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(redForcePoint.position.x - redSharpner.transform.position.x, redForcePoint.position.y - redSharpner.transform.position.y, 0) * 35 * scale);
                 redSharpnerHit = false;
                 redDirectionLine.localScale = Vector3.zero;
 
@@ -176,7 +190,7 @@ public class SharnerController : MonoBehaviour
                 turn = 0;
                 blueSharpnerHit = false;
                 slideSound.Play();
-                blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * 60 * scale);
+                blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * 35 * scale);
                 blueDirectionLine.localScale = Vector3.zero;
                 Invoke("ActivateTurn1", 1);
             }
@@ -187,7 +201,7 @@ public class SharnerController : MonoBehaviour
     {
         turn = 0;
         slideSound.Play();
-        blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * scale * 20);
+        blueSharpner.GetComponent<Rigidbody2D>().AddForce(new Vector3(blueForcePoint.position.x - blueSharpner.transform.position.x, blueForcePoint.position.y - blueSharpner.transform.position.y, 0) * scale * 40);
         blueDirectionLine.localScale = Vector3.zero;
         Invoke("ActivateTurn1", 1);
     }
