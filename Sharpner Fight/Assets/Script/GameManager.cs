@@ -1,82 +1,182 @@
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] AudioSource dyeSound;
-    [SerializeField] AudioSource buttonSound;
-    [SerializeField] AudioSource bgMusic;
-    [SerializeField] GameObject winScreen;
+    public static List<string> PlayersName = new List<string>();
+    public static string currentTurn;
+    public static byte turn;
+
+    [SerializeField] Transform[] spwanPoint;
+    [SerializeField] GameObject[] players;
+    private GameObject[] instanstiatedPlayers;
+
     [SerializeField] GameObject gameScreen;
     [SerializeField] GameObject pauseScreen;
-    [SerializeField] Text winPlayerText;
-    public static bool isGameOver;
-    private bool isPause;
+    
+    [SerializeField] AudioSource buttonSound;
+    [SerializeField] AudioSource bgMusic;
+
+
+    private float timer;
+    [SerializeField] Text playerText;
+    [SerializeField] Text singlePlayerText;
+    [SerializeField] Text difficultyText;
+    [SerializeField] GameObject timerText;
+
+    private bool isPause,isSharpnersInstanstiate;
+        
 
     private void Start()
     {
-       if(bgMusic != null) bgMusic.Play();
+        for (int i = 0; i < GameManager.PlayersName.Count; i++)
+        {
+            GameManager.PlayersName.Remove(GameManager.PlayersName[i]);
+        }
+        isPause = false;
+        isSharpnersInstanstiate = false;
+        instanstiatedPlayers = new GameObject[players.Length];
+        timer = 10;
+        turn = 0;
+        InstanstiatePlayer();
+        Stats();
     }
 
     private void Update()
     {
-        if(Input.GetKey(KeyCode.Escape))
+        if (PlayersName.Count == 1) GameOver.isGameOver = true;
+        if(GameOver.isGameOver && Input.GetKey(KeyCode.Escape))
         {
             if (isPause) ResumeButton();
             else PauseButton();
         }
 
-        if ((bgMusic != null) && isGameOver) bgMusic.Stop();
+        if (GameOver.isGameOver) bgMusic.Stop();
+
+        if (isSharpnersInstanstiate && !GameOver.isGameOver) TurnCalculator();
+
+        if ((Menu.player > 1) && isSharpnersInstanstiate) DesableSharpner();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void TurnCalculator()
     {
-        if ((collision.gameObject.tag == "Sharpner") && !isGameOver)
+        if (Menu.player == 1)
         {
-            dyeSound.Play();
-            gameScreen.SetActive(false);
-            Invoke("SetWinScreenActive", 1);
-            isGameOver = true;
-            collision.gameObject.transform.localScale = collision.gameObject.transform.localScale / 2;
-            if (collision.gameObject.transform.name == "Red")
+            if ((currentTurn == PlayersName[1]) && !Sharpner.isSharpnerFire)
             {
-                if (Menu.player == 1)
+                timerText.SetActive(true);
+                playerText.gameObject.SetActive(true);
+                playerText.color = Color.red;
+                playerText.text = "Player 1";
+                if (timer > 0)
                 {
-                    winPlayerText.color = Color.blue;
-                    winPlayerText.text = "Com Wins";
+                    timer -= Time.deltaTime;
+                    timerText.GetComponent<Text>().text = timer.ToString();
                 }
                 else
                 {
-                    winPlayerText.color = Color.blue;
-                    winPlayerText.text = "Player 2 Wins";
+                    timer = 10;
+                    currentTurn = PlayersName[0];
                 }
             }
-            if (collision.gameObject.transform.name == "Blue")
+            else
             {
-                winPlayerText.color = Color.red;
-                winPlayerText.text = "Player 1 Wins";
+                timerText.SetActive(false);
+                playerText.gameObject.SetActive(false);
+                timerText.SetActive(false);
+                timer = 10;
+            }
+        }
+        else 
+        {
+            currentTurn = PlayersName[turn];
+            if(!Sharpner.isSharpnerFire)
+            {
+                timerText.SetActive(true);
+                playerText.gameObject.SetActive(true);
+                if(turn == 0) playerText.color = Color.red;
+                else if(turn == 1) playerText.color = Color.blue;
+                else if(turn == 2) playerText.color = Color.green;
+                else if(turn == 3) playerText.color = Color.gray;
+                if (timer > 0)
+                {
+                    playerText.text = currentTurn;
+                    timer -= Time.deltaTime;
+                    timerText.GetComponent<Text>().text = timer.ToString();
+
+                }
+                else
+                {
+                    timer = 10;
+                    if (turn < (PlayersName.Count-1)) turn++;
+                    else turn = 0;
+                    currentTurn = PlayersName[turn];
+                }
+            }
+            else
+            {
+                timer = 10;
+                timerText.SetActive(false);
+                playerText.gameObject.SetActive(false);
+            }
+        }
+    }
+       
+    private void InstanstiatePlayer()
+    {
+        if (Menu.player == 1)
+        {
+            Instantiate(players[0], spwanPoint[1].position, spwanPoint[1].rotation); //Instantiate AI
+            Instantiate(players[1], spwanPoint[0].position, spwanPoint[0].rotation); //Instantiate Player
+            PlayersName.Add(players[0].name);
+            PlayersName.Add(players[1].name);
+            currentTurn = PlayersName[1];
+            isSharpnersInstanstiate = true;
+        }
+        else
+        {
+            for(int i = 1; i <= Menu.player; i++)
+            {
+               instanstiatedPlayers[i] = (GameObject)Instantiate(players[i], spwanPoint[i - 1].position, spwanPoint[i - 1].rotation);
+               PlayersName.Add(players[i].name);
+            }
+            turn = 0;
+            currentTurn = PlayersName[turn];
+            isSharpnersInstanstiate = true;
+        }
+    }
+
+    public void DesableSharpner()
+    {
+        for (int i = 0; i < PlayersName.Count; i++)
+        {
+            if (currentTurn == PlayersName[i])
+            {
+               instanstiatedPlayers[i+1].gameObject.GetComponent<Sharpner>().enabled = true;
+            }
+            else
+            {
+                instanstiatedPlayers[i+1].gameObject.GetComponent<Sharpner>().enabled = false;
             }
         }
     }
 
-    private void SetWinScreenActive()
+    private void Stats()
     {
-        winScreen.SetActive(true);
-    }
-
-    public void RestartButton()
-    {
-        ResumeButton();
-        buttonSound.Play();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    public void MenuButton()
-    {
-        ResumeButton();
-        buttonSound.Play();
-        SceneManager.LoadScene(0);
+        if (Menu.player == 1)
+        {
+            difficultyText.gameObject.SetActive(true);
+            singlePlayerText.text = "Single Player";
+            if (Menu.difficulty == 1) difficultyText.text = "Easy";
+            if (Menu.difficulty == 2) difficultyText.text = "Medium";
+            if (Menu.difficulty == 3) difficultyText.text = "Hard";
+        }
+        else
+        {
+            difficultyText.gameObject.SetActive(false);
+            singlePlayerText.text = "Two Player";
+        }
     }
 
     public void PauseButton()

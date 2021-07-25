@@ -12,11 +12,7 @@ public class Menu : MonoBehaviour
     [SerializeField] AudioSource buttonSound;
     private bool isQuitPanelActivate;
 
-    private void Start()
-    {
-        loadingPng.SetActive(false);
-    }
-
+  
     private void Update()
     {
         if(Input.GetKey(KeyCode.Escape))
@@ -40,7 +36,7 @@ public class Menu : MonoBehaviour
         menuPanel.SetActive(false);
         difficultyPanel.SetActive(false);
         buttonSound.Play();
-        player = 2;
+        player = 4;
         SceneManager.LoadScene(1);
     }
 
