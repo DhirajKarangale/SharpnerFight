@@ -10,6 +10,7 @@ public class GameOver : MonoBehaviour
     [SerializeField] GameObject gameScreen;
 
     [SerializeField] Text winPlayerText;
+    [SerializeField] Text playerEliminateText;
 
     [SerializeField] AudioSource dyeSound;
     [SerializeField] AudioSource buttonSound;
@@ -62,12 +63,41 @@ public class GameOver : MonoBehaviour
                 {
                     if (collision.transform.name == GameManager.PlayersName[i]+"(Clone)")
                     {
+                        playerEliminateText.gameObject.SetActive(true);
                         isSharpnerHitEnd = true;
                         GameManager.PlayersName.Remove(GameManager.PlayersName[i]);
                         GameManager.instanstiatedPlayers.Remove(GameManager.instanstiatedPlayers[i]);
                         collision.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                         collision.gameObject.GetComponent<Sharpner>().enabled = false;
                         Destroy(collision.gameObject,5f);
+                        if(collision.transform.name == "Player1(Clone)")
+                        {
+                            playerEliminateText.gameObject.SetActive(true);
+                            playerEliminateText.color = Color.red;
+                            playerEliminateText.text = "Player 1 Eliminated";
+                            Invoke("DesableEliminatePlayerText", 1.5f);
+                        }
+                        else if (collision.transform.name == "Player2(Clone)")
+                        {
+                            playerEliminateText.gameObject.SetActive(true);
+                            playerEliminateText.color = Color.blue;
+                            playerEliminateText.text = "Player 2 Eliminated";
+                            Invoke("DesableEliminatePlayerText", 1.5f);
+                        }
+                        else if (collision.transform.name == "Player3(Clone)")
+                        {
+                            playerEliminateText.gameObject.SetActive(true);
+                            playerEliminateText.color = Color.green;
+                            playerEliminateText.text = "Player 3 Eliminated";
+                            Invoke("DesableEliminatePlayerText", 1.5f);
+                        }
+                        else if (collision.transform.name == "Player4(Clone)")
+                        {
+                            playerEliminateText.gameObject.SetActive(true);
+                            playerEliminateText.color = Color.white;
+                            playerEliminateText.text = "Player 4 Eliminated";
+                            Invoke("DesableEliminatePlayerText", 1.5f);
+                        }
                         if ((GameManager.turn <= 0) || (GameManager.turn == GameManager.PlayersName.Count)) GameManager.turn = 0;
                     }
                 }
@@ -78,6 +108,11 @@ public class GameOver : MonoBehaviour
     private void SetWinScreenActive()
     {
         gameOverScreen.SetActive(true);
+    }
+
+    private void DesableEliminatePlayerText()
+    {
+        playerEliminateText.gameObject.SetActive(false);
     }
 
     public void RestartButton()
@@ -93,4 +128,5 @@ public class GameOver : MonoBehaviour
         buttonSound.Play();
         SceneManager.LoadScene(0);
     }
+
 }

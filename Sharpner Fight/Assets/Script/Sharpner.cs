@@ -25,7 +25,7 @@ public class Sharpner : MonoBehaviour
 
     private void Start()
     {
-        transform.localScale = new Vector3(1, 1, 1);
+        transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
         isSharpnerFire = false;
         isSharpnerTouch = false;
         mainCamera = GameObject.FindObjectOfType<Camera>();

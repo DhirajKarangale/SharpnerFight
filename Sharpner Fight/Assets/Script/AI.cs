@@ -6,7 +6,6 @@ public class AI : MonoBehaviour
     [SerializeField] Transform forcePoint;
     [SerializeField] AudioSource slideSound;
     private Rigidbody2D rigidBody;
-    [SerializeField] Transform playerSharpner;
     private float scale;
 
     private void Start()
@@ -20,35 +19,35 @@ public class AI : MonoBehaviour
 
         if ((Menu.player == 1) && (GameManager.currentTurn == GameManager.PlayersName[0]) && !GameOver.isGameOver)
         {
+            float dis = Vector2.Distance(transform.position, GameManager.instanstiatedPlayers[0].transform.position);
             Vector3 rondomTargetPos;
             switch (Menu.difficulty)
             {
                 case 1:
-                    float dis = Vector2.Distance(transform.position, transform.position);
                     if (dis >= 5)
                     {
-                        rondomTargetPos = new Vector3(playerSharpner.position.y, playerSharpner.position.z, Random.Range(playerSharpner.position.x - 200, playerSharpner.position.x + 200));
-                        scale = Random.Range(1, 5f);
+                        rondomTargetPos = new Vector3(Random.Range(GameManager.instanstiatedPlayers[0].transform.position.x - 9, GameManager.instanstiatedPlayers[0].transform.position.x + 9), GameManager.instanstiatedPlayers[0].transform.position.y, GameManager.instanstiatedPlayers[0].transform.position.z);
+                        scale = Random.Range(1, 4);
                     }
                     else if (dis >= 2)
                     {
-                        rondomTargetPos = new Vector3(playerSharpner.position.y, playerSharpner.position.z, Random.Range(playerSharpner.position.x - 2, playerSharpner.position.x + 2));
-                        scale = Random.Range(1, 3f);
+                        rondomTargetPos = new Vector3(Random.Range(GameManager.instanstiatedPlayers[0].transform.position.x - 1.5f, GameManager.instanstiatedPlayers[0].transform.position.x + 1.5f), GameManager.instanstiatedPlayers[0].transform.position.y, GameManager.instanstiatedPlayers[0].transform.position.z);
+                        scale = Random.Range(1, 3);
                     }
                     else
                     {
-                        scale = 2.5f;
-                        rondomTargetPos = playerSharpner.position;
+                        scale = 2.7f;
+                        rondomTargetPos = GameManager.instanstiatedPlayers[0].transform.position;
                     }
                     break;
 
                 case 2:
-                    rondomTargetPos = playerSharpner.position;
-                    scale = Random.Range(1.2f, 4f);
+                    rondomTargetPos = GameManager.instanstiatedPlayers[0].transform.position;
+                    scale = Random.Range(1.6f, 4f);
                     break;
 
                 default:
-                    rondomTargetPos = playerSharpner.position;
+                    rondomTargetPos = GameManager.instanstiatedPlayers[0].transform.position;
                     scale = 4.5f;
                     break;
             }
@@ -56,7 +55,7 @@ public class AI : MonoBehaviour
             Vector3 dir = rondomTargetPos - transform.position;
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
-
+            
             directionLine.localScale = new Vector3(scale * 0.3f, scale * 0.3f, scale * 0.3f);
 
             Invoke("AddForceComSharpner", 0.5f);

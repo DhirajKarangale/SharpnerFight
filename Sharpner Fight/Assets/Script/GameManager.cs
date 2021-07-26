@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
                 if (currentTurn == "Player1") playerText.color = Color.red;
                 else if(currentTurn == "Player2") playerText.color = Color.blue;
                 else if(currentTurn == "Player3") playerText.color = Color.green;
-                else if(currentTurn == "Player4") playerText.color = Color.gray;
+                else if(currentTurn == "Player4") playerText.color = Color.white;
 
                 if (timer > 0)
                 {
@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
         if (Menu.player == 1)
         {
             Instantiate(players[0], spwanPoint[1].position, spwanPoint[1].rotation); //Instantiate AI
-            Instantiate(players[1], spwanPoint[0].position, spwanPoint[0].rotation); //Instantiate Player
+            instanstiatedPlayers.Add(Instantiate(players[1], spwanPoint[0].position, spwanPoint[0].rotation)); //Instantiate Player
             PlayersName.Add(players[0].name);
             PlayersName.Add(players[1].name);
             currentTurn = PlayersName[1];
@@ -196,7 +196,7 @@ public class GameManager : MonoBehaviour
         else if (Menu.player == 4)
         {
             difficultyText.gameObject.SetActive(false);
-            singlePlayerText.color = Color.gray;
+            singlePlayerText.color = Color.white;
             singlePlayerText.text = "Four Player";
         }
     }
