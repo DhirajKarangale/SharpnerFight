@@ -30,14 +30,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < PlayersName.Count; i++)
-        {
-            PlayersName.Remove(PlayersName[i]);
-        }
-        for (int i = 0; i < instanstiatedPlayers.Count; i++)
-        {
-            instanstiatedPlayers.Remove(instanstiatedPlayers[i]);
-        }
+        PlayersName.Clear();
+        instanstiatedPlayers.Clear();
         isPause = false;
         isSharpnersInstanstiate = false;
         timer = 10;
