@@ -50,6 +50,7 @@ public class Sharpner : MonoBehaviour
                
                 if (isSharpnerTouch)
                 {
+                    GameOver.isSharpnerHitEnd = false;
                     isSharpnerFire = true;
                     isSharpnerTouch = true;
                     var dir = raycastHit.point - new Vector2(transform.position.x, transform.position.y);
@@ -78,9 +79,12 @@ public class Sharpner : MonoBehaviour
         if (Menu.player == 1) GameManager.currentTurn = GameManager.PlayersName[0];
         else
         {
-            if (GameManager.turn < (GameManager.PlayersName.Count - 1)) GameManager.turn++;
-            else GameManager.turn = 0;
-            GameManager.currentTurn = GameManager.PlayersName[GameManager.turn];
+            if (!GameOver.isSharpnerHitEnd)
+            {
+                if (GameManager.turn < (GameManager.PlayersName.Count - 1)) GameManager.turn++;
+                else GameManager.turn = 0;
+                GameManager.currentTurn = GameManager.PlayersName[GameManager.turn];
+            }
         }
         isSharpnerFire = false;
     }

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class GameOver : MonoBehaviour
 {
-    public static bool isGameOver;
+    public static bool isGameOver,isSharpnerHitEnd;
     
     [SerializeField] GameObject gameOverScreen;
     [SerializeField] GameObject gameScreen;
@@ -17,6 +17,7 @@ public class GameOver : MonoBehaviour
     private void Start()
     {
         isGameOver = false;
+        isSharpnerHitEnd = false;
     }
 
     private void Update()
@@ -61,7 +62,13 @@ public class GameOver : MonoBehaviour
                 {
                     if (collision.transform.name == GameManager.PlayersName[i]+"(Clone)")
                     {
+                        isSharpnerHitEnd = true;
                         GameManager.PlayersName.Remove(GameManager.PlayersName[i]);
+                        GameManager.instanstiatedPlayers.Remove(GameManager.instanstiatedPlayers[i]);
+                        collision.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                        collision.gameObject.GetComponent<Sharpner>().enabled = false;
+                        Destroy(collision.gameObject,5f);
+                        if ((GameManager.turn <= 0) || (GameManager.turn == GameManager.PlayersName.Count)) GameManager.turn = 0;
                     }
                 }
             }
@@ -86,5 +93,4 @@ public class GameOver : MonoBehaviour
         buttonSound.Play();
         SceneManager.LoadScene(0);
     }
-
 }

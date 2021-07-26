@@ -8,6 +8,7 @@ public class Menu : MonoBehaviour
     [SerializeField] GameObject difficultyPanel;
     [SerializeField] GameObject menuPanel;
     [SerializeField] GameObject quitPanel;
+    [SerializeField] GameObject multiPlayerPanel;
     [SerializeField] GameObject loadingPng;
     [SerializeField] AudioSource buttonSound;
     private bool isQuitPanelActivate;
@@ -27,35 +28,13 @@ public class Menu : MonoBehaviour
     {
         buttonSound.Play();
         player = 1;
-        difficultyPanel.SetActive(true);
-    }
-
-    public void TwoPlayerButton()
-    {
-        loadingPng.SetActive(true);
         menuPanel.SetActive(false);
-        difficultyPanel.SetActive(false);
-        buttonSound.Play();
-        player = 4;
-        SceneManager.LoadScene(1);
-    }
-
-    public void MoreGamesButton()
-    {
-        buttonSound.Play();
-        Application.OpenURL("https://play.google.com/store/apps/developer?id=DK_Software");
-    }
-
-    public void QuitButton()
-    {
-        buttonSound.Play();
-        Application.Quit();
+        difficultyPanel.SetActive(true);
     }
 
     public void EasyButton()
     {
         loadingPng.SetActive(true);
-        menuPanel.SetActive(false);
         difficultyPanel.SetActive(false);
         buttonSound.Play();
         difficulty = 1;
@@ -65,7 +44,6 @@ public class Menu : MonoBehaviour
     public void MediumButton()
     {
         loadingPng.SetActive(true);
-        menuPanel.SetActive(false);
         difficultyPanel.SetActive(false);
         buttonSound.Play();
         difficulty = 2;
@@ -75,7 +53,6 @@ public class Menu : MonoBehaviour
     public void HardButton()
     {
         loadingPng.SetActive(true);
-        menuPanel.SetActive(false);
         difficultyPanel.SetActive(false);
         buttonSound.Play();
         difficulty = 3;
@@ -85,7 +62,59 @@ public class Menu : MonoBehaviour
     public void BackDifficultyButton()
     {
         buttonSound.Play();
+        menuPanel.SetActive(true);
         difficultyPanel.SetActive(false);
+    }
+    
+
+
+    public void MultiPlayerPlayerButton()
+    {
+        buttonSound.Play();
+        menuPanel.SetActive(false);
+        multiPlayerPanel.SetActive(true);
+    }
+
+    public void TwoPlayerButton()
+    {
+        loadingPng.SetActive(true);
+        multiPlayerPanel.SetActive(false);
+        buttonSound.Play();
+        player = 2;
+        SceneManager.LoadScene(1);
+    }
+
+    public void ThreePlayerButton()
+    {
+        loadingPng.SetActive(true);
+        multiPlayerPanel.SetActive(false);
+        buttonSound.Play();
+        player = 3;
+        SceneManager.LoadScene(1);
+    }
+
+    public void FourPlayerButton()
+    {
+        loadingPng.SetActive(true);
+        multiPlayerPanel.SetActive(false);
+        buttonSound.Play();
+        player = 4;
+        SceneManager.LoadScene(1);
+    }
+
+    public void BackMultiPlayerButton()
+    {
+        buttonSound.Play();
+        menuPanel.SetActive(true);
+        multiPlayerPanel.SetActive(false);
+    }
+    
+
+
+    public void QuitButton()
+    {
+        buttonSound.Play();
+        Application.Quit();
     }
 
     public void ActiveQuitPanel()
@@ -98,6 +127,14 @@ public class Menu : MonoBehaviour
     {
         isQuitPanelActivate = false;
         quitPanel.SetActive(false);
+    }
+
+
+
+    public void MoreGamesButton()
+    {
+        buttonSound.Play();
+        Application.OpenURL("https://play.google.com/store/apps/developer?id=DK_Software");
     }
 }
 

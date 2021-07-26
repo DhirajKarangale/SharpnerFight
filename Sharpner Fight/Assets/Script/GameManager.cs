@@ -5,12 +5,12 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static List<string> PlayersName = new List<string>();
+    public static List<GameObject> instanstiatedPlayers = new List<GameObject>();
     public static string currentTurn;
     public static byte turn;
 
     [SerializeField] Transform[] spwanPoint;
     [SerializeField] GameObject[] players;
-    private GameObject[] instanstiatedPlayers;
 
     [SerializeField] GameObject gameScreen;
     [SerializeField] GameObject pauseScreen;
@@ -30,13 +30,16 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < GameManager.PlayersName.Count; i++)
+        for (int i = 0; i < PlayersName.Count; i++)
         {
-            GameManager.PlayersName.Remove(GameManager.PlayersName[i]);
+            PlayersName.Remove(PlayersName[i]);
+        }
+        for (int i = 0; i < instanstiatedPlayers.Count; i++)
+        {
+            instanstiatedPlayers.Remove(instanstiatedPlayers[i]);
         }
         isPause = false;
         isSharpnersInstanstiate = false;
-        instanstiatedPlayers = new GameObject[players.Length];
         timer = 10;
         turn = 0;
         InstanstiatePlayer();
@@ -46,7 +49,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (PlayersName.Count == 1) GameOver.isGameOver = true;
-        if(GameOver.isGameOver && Input.GetKey(KeyCode.Escape))
+        if(!GameOver.isGameOver && Input.GetKey(KeyCode.Escape))
         {
             if (isPause) ResumeButton();
             else PauseButton();
@@ -55,8 +58,6 @@ public class GameManager : MonoBehaviour
         if (GameOver.isGameOver) bgMusic.Stop();
 
         if (isSharpnersInstanstiate && !GameOver.isGameOver) TurnCalculator();
-
-        if ((Menu.player > 1) && isSharpnersInstanstiate) DesableSharpner();
     }
 
     private void TurnCalculator()
@@ -90,15 +91,16 @@ public class GameManager : MonoBehaviour
         }
         else 
         {
-            currentTurn = PlayersName[turn];
             if(!Sharpner.isSharpnerFire)
             {
                 timerText.SetActive(true);
                 playerText.gameObject.SetActive(true);
-                if(turn == 0) playerText.color = Color.red;
-                else if(turn == 1) playerText.color = Color.blue;
-                else if(turn == 2) playerText.color = Color.green;
-                else if(turn == 3) playerText.color = Color.gray;
+                currentTurn = PlayersName[turn];
+                if (currentTurn == "Player1") playerText.color = Color.red;
+                else if(currentTurn == "Player2") playerText.color = Color.blue;
+                else if(currentTurn == "Player3") playerText.color = Color.green;
+                else if(currentTurn == "Player4") playerText.color = Color.gray;
+
                 if (timer > 0)
                 {
                     playerText.text = currentTurn;
@@ -113,6 +115,7 @@ public class GameManager : MonoBehaviour
                     else turn = 0;
                     currentTurn = PlayersName[turn];
                 }
+              DesableSharpner();
             }
             else
             {
@@ -138,7 +141,7 @@ public class GameManager : MonoBehaviour
         {
             for(int i = 1; i <= Menu.player; i++)
             {
-               instanstiatedPlayers[i] = (GameObject)Instantiate(players[i], spwanPoint[i - 1].position, spwanPoint[i - 1].rotation);
+               instanstiatedPlayers.Add(Instantiate(players[i], spwanPoint[i-1].position, spwanPoint[i-1].rotation));
                PlayersName.Add(players[i].name);
             }
             turn = 0;
@@ -153,11 +156,11 @@ public class GameManager : MonoBehaviour
         {
             if (currentTurn == PlayersName[i])
             {
-               instanstiatedPlayers[i+1].gameObject.GetComponent<Sharpner>().enabled = true;
+                instanstiatedPlayers[i].gameObject.GetComponent<Sharpner>().enabled = true;
             }
             else
             {
-                instanstiatedPlayers[i+1].gameObject.GetComponent<Sharpner>().enabled = false;
+                instanstiatedPlayers[i].gameObject.GetComponent<Sharpner>().enabled = false;
             }
         }
     }
@@ -168,14 +171,39 @@ public class GameManager : MonoBehaviour
         {
             difficultyText.gameObject.SetActive(true);
             singlePlayerText.text = "Single Player";
-            if (Menu.difficulty == 1) difficultyText.text = "Easy";
-            if (Menu.difficulty == 2) difficultyText.text = "Medium";
-            if (Menu.difficulty == 3) difficultyText.text = "Hard";
+            if (Menu.difficulty == 1)
+            {
+                difficultyText.color = Color.green;
+                difficultyText.text = "Easy";
+            }
+            if (Menu.difficulty == 2)
+            {
+                difficultyText.color = Color.yellow;
+                difficultyText.text = "Medium";
+            }
+            if (Menu.difficulty == 3)
+            {
+                difficultyText.color = Color.red;
+                difficultyText.text = "Hard";
+            }
         }
-        else
+        else if(Menu.player == 2)
         {
             difficultyText.gameObject.SetActive(false);
+            singlePlayerText.color = Color.blue;
             singlePlayerText.text = "Two Player";
+        }
+        else if (Menu.player == 3)
+        {
+            difficultyText.gameObject.SetActive(false);
+            singlePlayerText.color = Color.green;
+            singlePlayerText.text = "Three Player";
+        }
+        else if (Menu.player == 4)
+        {
+            difficultyText.gameObject.SetActive(false);
+            singlePlayerText.color = Color.gray;
+            singlePlayerText.text = "Four Player";
         }
     }
 
