@@ -107,7 +107,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: b814901fd92a4924285d425aaae36617, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c726bced418275f4b9a1271188089ecd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -154,7 +154,6 @@ MonoBehaviour:
   directionLine: {fileID: 2432677170311577657}
   forcePoint: {fileID: 2432677169971786089}
   slideSound: {fileID: 1820048447080945309}
-  playerSharpner: {fileID: 5554976049739501893, guid: 63cca7321c8758a4094af9dc96281d92, type: 3}
 --- !u!82 &1820048447080945309
 AudioSource:
   m_ObjectHideFlags: 0
