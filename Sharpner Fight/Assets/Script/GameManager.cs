@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
                 if (currentTurn == "Player1") playerText.color = Color.red;
                 else if(currentTurn == "Player2") playerText.color = Color.blue;
                 else if(currentTurn == "Player3") playerText.color = Color.green;
-                else if(currentTurn == "Player4") playerText.color = Color.white;
+                else if(currentTurn == "Player4") playerText.color = Color.yellow;
 
                 if (timer > 0)
                 {
@@ -196,7 +196,7 @@ public class GameManager : MonoBehaviour
         else if (Menu.player == 4)
         {
             difficultyText.gameObject.SetActive(false);
-            singlePlayerText.color = Color.white;
+            singlePlayerText.color = Color.yellow;
             singlePlayerText.text = "Four Player";
         }
     }

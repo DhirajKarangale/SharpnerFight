@@ -30,7 +30,7 @@ public class GameOver : MonoBehaviour
             if (GameManager.PlayersName[0] == "Player1") winPlayerText.color = Color.red;
             if (GameManager.PlayersName[0] == "Player2") winPlayerText.color = Color.blue;
             if (GameManager.PlayersName[0] == "Player3") winPlayerText.color = Color.green;
-            if (GameManager.PlayersName[0] == "Player4") winPlayerText.color = Color.gray;
+            if (GameManager.PlayersName[0] == "Player4") winPlayerText.color = Color.yellow;
             winPlayerText.text = GameManager.PlayersName[0] + " Win";
         }
     }
@@ -94,7 +94,7 @@ public class GameOver : MonoBehaviour
                         else if (collision.transform.name == "Player4(Clone)")
                         {
                             playerEliminateText.gameObject.SetActive(true);
-                            playerEliminateText.color = Color.white;
+                            playerEliminateText.color = Color.yellow;
                             playerEliminateText.text = "Player 4 Eliminated";
                             Invoke("DesableEliminatePlayerText", 1.5f);
                         }
