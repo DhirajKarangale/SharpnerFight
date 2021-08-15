@@ -22,7 +22,9 @@ public class GameManager : MonoBehaviour
     private float timer;
     [SerializeField] Text playerText;
     [SerializeField] Text singlePlayerText;
+    [SerializeField] Text singlePlayertextInGameOver;
     [SerializeField] Text difficultyText;
+    [SerializeField] Text difficuiltyTextInGameOver;
     [SerializeField] GameObject timerText;
 
     private bool isPause,isSharpnersInstanstiate;
@@ -43,7 +45,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (PlayersName.Count == 1) GameOver.isGameOver = true;
-        if(!GameOver.isGameOver && Input.GetKey(KeyCode.Escape))
+        if(!GameOver.isGameOver && Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPause) ResumeButton();
             else PauseButton();
@@ -151,10 +153,12 @@ public class GameManager : MonoBehaviour
             if (currentTurn == PlayersName[i])
             {
                 instanstiatedPlayers[i].gameObject.GetComponent<Sharpner>().enabled = true;
+                instanstiatedPlayers[i].gameObject.GetComponent<Sharpner>().lightObj.SetActive(true);
             }
             else
             {
                 instanstiatedPlayers[i].gameObject.GetComponent<Sharpner>().enabled = false;
+                instanstiatedPlayers[i].gameObject.GetComponent<Sharpner>().lightObj.SetActive(false);
             }
         }
     }
@@ -163,44 +167,62 @@ public class GameManager : MonoBehaviour
     {
         if (Menu.player == 1)
         {
+            TextAndColor(singlePlayerText, Color.white, "Single Player");
+            TextAndColor(singlePlayertextInGameOver, Color.white, "Single Player");
             difficultyText.gameObject.SetActive(true);
-            singlePlayerText.text = "Single Player";
+            difficuiltyTextInGameOver.gameObject.SetActive(true);
+
             if (Menu.difficulty == 1)
             {
-                difficultyText.color = Color.green;
-                difficultyText.text = "Easy";
+                TextAndColor(difficultyText, Color.green, "Easy");
+                TextAndColor(difficuiltyTextInGameOver, Color.green, "Easy");
             }
             if (Menu.difficulty == 2)
             {
-                difficultyText.color = Color.yellow;
-                difficultyText.text = "Medium";
+                TextAndColor(difficultyText, Color.yellow, "Medium");
+                TextAndColor(difficuiltyTextInGameOver, Color.yellow, "Medium");
             }
             if (Menu.difficulty == 3)
             {
-                difficultyText.color = Color.red;
-                difficultyText.text = "Hard";
+                TextAndColor(difficultyText, Color.red, "Hard");
+                TextAndColor(difficuiltyTextInGameOver, Color.red, "Hard");
             }
         }
         else if(Menu.player == 2)
         {
             difficultyText.gameObject.SetActive(false);
-            singlePlayerText.color = Color.blue;
-            singlePlayerText.text = "Two Player";
+            difficuiltyTextInGameOver.gameObject.SetActive(false);
+
+            TextAndColor(singlePlayerText, Color.blue, "Two Player");
+            TextAndColor(singlePlayertextInGameOver, Color.blue, "Two Player");
+
         }
         else if (Menu.player == 3)
         {
             difficultyText.gameObject.SetActive(false);
-            singlePlayerText.color = Color.green;
-            singlePlayerText.text = "Three Player";
+            difficuiltyTextInGameOver.gameObject.SetActive(false);
+
+            TextAndColor(singlePlayerText, Color.green, "Three Player");
+            TextAndColor(singlePlayertextInGameOver, Color.green, "Three Player");
+
         }
         else if (Menu.player == 4)
         {
             difficultyText.gameObject.SetActive(false);
-            singlePlayerText.color = Color.yellow;
-            singlePlayerText.text = "Four Player";
+            difficuiltyTextInGameOver.gameObject.SetActive(false);
+
+            TextAndColor(singlePlayerText, Color.yellow, "Four Player");
+            TextAndColor(singlePlayertextInGameOver, Color.yellow, "Four Player");
+
         }
     }
 
+    private void TextAndColor(Text text,Color color,string textValue)
+    {
+        text.color = color;
+        text.text = textValue;
+    }
+ 
     public void PauseButton()
     {
         isPause = true;

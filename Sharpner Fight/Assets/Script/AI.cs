@@ -5,12 +5,14 @@ public class AI : MonoBehaviour
     [SerializeField] Transform directionLine;
     [SerializeField] Transform forcePoint;
     [SerializeField] AudioSource slideSound;
-    private Rigidbody2D rigidBody;
+    [SerializeField] GameObject lightObj;
+    [SerializeField] Rigidbody2D rigidBody;
     private float scale;
+    public static bool playerturnFromAI;
 
     private void Start()
     {
-        rigidBody = GetComponent<Rigidbody2D>();
+        playerturnFromAI = true;
     }
 
     private void Update()
@@ -19,6 +21,7 @@ public class AI : MonoBehaviour
 
         if ((Menu.player == 1) && (GameManager.currentTurn == GameManager.PlayersName[0]) && !GameOver.isGameOver)
         {
+            lightObj.SetActive(true);
             float dis = Vector2.Distance(transform.position, GameManager.instanstiatedPlayers[0].transform.position);
             Vector3 rondomTargetPos;
             switch (Menu.difficulty)
@@ -26,7 +29,7 @@ public class AI : MonoBehaviour
                 case 1:
                     if (dis >= 5)
                     {
-                        rondomTargetPos = new Vector3(Random.Range(GameManager.instanstiatedPlayers[0].transform.position.x - 9, GameManager.instanstiatedPlayers[0].transform.position.x + 9), GameManager.instanstiatedPlayers[0].transform.position.y, GameManager.instanstiatedPlayers[0].transform.position.z);
+                        rondomTargetPos = new Vector3(Random.Range(GameManager.instanstiatedPlayers[0].transform.position.x - 7, GameManager.instanstiatedPlayers[0].transform.position.x + 7), GameManager.instanstiatedPlayers[0].transform.position.y, GameManager.instanstiatedPlayers[0].transform.position.z);
                         scale = Random.Range(1, 4);
                     }
                     else if (dis >= 2)
@@ -65,6 +68,7 @@ public class AI : MonoBehaviour
 
     private void AddForceComSharpner()
     {
+        lightObj.SetActive(false);
         GameManager.currentTurn = "None";
         slideSound.Play();
         rigidBody.AddForce(new Vector3(forcePoint.position.x - transform.position.x, forcePoint.position.y - transform.position.y, 0) * scale * 40);
@@ -75,5 +79,6 @@ public class AI : MonoBehaviour
     private void ActivateTurn1()
     {
         GameManager.currentTurn = GameManager.PlayersName[1];
+        playerturnFromAI = true;
     }
 }

@@ -6,10 +6,11 @@ public class Sharpner : MonoBehaviour
     [SerializeField] Transform directionLine;
     [SerializeField] Transform forcePoint;
     [SerializeField] AudioSource slideSound;
+    public GameObject lightObj;
+    [SerializeField] Rigidbody2D rigidBody;
 
     public static bool isSharpnerFire;
     private bool isSharpnerTouch;
-    private Rigidbody2D rigidBody;
     private RaycastHit2D raycastHit;
     private float scale;
 
@@ -25,11 +26,10 @@ public class Sharpner : MonoBehaviour
 
     private void Start()
     {
-        transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+        transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
         isSharpnerFire = false;
         isSharpnerTouch = false;
         mainCamera = GameObject.FindObjectOfType<Camera>();
-        rigidBody = GetComponent<Rigidbody2D>();
         collisionEffectAllow = true;
         directionLine.localScale = Vector2.zero;
     }
@@ -39,7 +39,10 @@ public class Sharpner : MonoBehaviour
         if (GameOver.isGameOver)
         {
             rigidBody.velocity = Vector2.zero;
+            lightObj.SetActive(false);
         }
+
+        if (AI.playerturnFromAI && !GameOver.isGameOver) lightObj.SetActive(true);
 
         if (!GameOver.isGameOver && Input.GetMouseButton(0))
         {
@@ -65,6 +68,8 @@ public class Sharpner : MonoBehaviour
         }
         else if (isSharpnerTouch && !GameOver.isGameOver && Input.GetMouseButtonUp(0))
         {
+            AI.playerturnFromAI = false;
+            lightObj.SetActive(false);
             isSharpnerTouch = false;
             GameManager.currentTurn = "None";
             slideSound.Play();
@@ -98,7 +103,7 @@ public class Sharpner : MonoBehaviour
             if (collideSound.isPlaying) collideSound.Stop();
             collideSound.Play();
             ShakeIt();
-            Invoke("AllowCollisionEffect", 1);
+            Invoke("AllowCollisionEffect", 1.5f);
         }
     }
 

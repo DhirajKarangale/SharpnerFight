@@ -63,8 +63,10 @@ public class GameOver : MonoBehaviour
                 {
                     if (collision.transform.name == GameManager.PlayersName[i]+"(Clone)")
                     {
+                        dyeSound.Play();
                         playerEliminateText.gameObject.SetActive(true);
                         isSharpnerHitEnd = true;
+                        int eleminatedPlayerindex = GameManager.PlayersName.IndexOf(GameManager.PlayersName[i]);
                         GameManager.PlayersName.Remove(GameManager.PlayersName[i]);
                         GameManager.instanstiatedPlayers.Remove(GameManager.instanstiatedPlayers[i]);
                         collision.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
@@ -98,7 +100,9 @@ public class GameOver : MonoBehaviour
                             playerEliminateText.text = "Player 4 Eliminated";
                             Invoke("DesableEliminatePlayerText", 1.5f);
                         }
-                        if ((GameManager.turn <= 0) || (GameManager.turn == GameManager.PlayersName.Count)) GameManager.turn = 0;
+
+                        if (eleminatedPlayerindex > 0) GameManager.turn++;
+                        else if ((GameManager.turn <= 0) || (GameManager.turn == GameManager.PlayersName.Count) && (eleminatedPlayerindex <= 0)) GameManager.turn = 0;
                     }
                 }
             }

@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 1946249895}
   m_Layer: 0
   m_Name: Light 2D
-  m_TagString: Untagged
+  m_TagString: Light
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1946249894
 Transform:
   m_ObjectHideFlags: 0
@@ -168,7 +168,7 @@ Transform:
   m_GameObject: {fileID: 2432677170122115613}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 2432677170311577657}
   - {fileID: 1946249894}
@@ -263,6 +263,8 @@ MonoBehaviour:
   directionLine: {fileID: 2432677170311577657}
   forcePoint: {fileID: 2432677169971786089}
   slideSound: {fileID: 1820048447080945309}
+  lightObj: {fileID: 1946249893}
+  rigidBody: {fileID: 2432677170122115601}
 --- !u!82 &1820048447080945309
 AudioSource:
   m_ObjectHideFlags: 0

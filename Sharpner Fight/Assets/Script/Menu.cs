@@ -13,19 +13,26 @@ public class Menu : MonoBehaviour
     [SerializeField] GameObject loadingPng;
     [SerializeField] AudioSource buttonSound;
     [SerializeField] GameObject panelLight;
-    private bool isQuitPanelActivate;
+    private bool isQuitPanelAllow;
 
     private void Start()
     {
-        BackButton();
+        isQuitPanelAllow = true;
+
+        menuPanel.SetActive(true);
+        singelPlayerPanel.SetActive(false);
+        multiPlayerPanel.SetActive(false);
+        aboutPanel.SetActive(false);
+        quitPanel.SetActive(false);
+        panelLight.SetActive(true);
     }
 
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isQuitPanelActivate) BackButton();
-            else ActiveQuitPanel();
+            if (isQuitPanelAllow) ActiveQuitPanel();
+            else BackButton();
         }
     }
      
@@ -34,6 +41,7 @@ public class Menu : MonoBehaviour
     {
         buttonSound.Play();
         player = 1;
+        isQuitPanelAllow = false;
 
         menuPanel.SetActive(false);
         singelPlayerPanel.SetActive(true);
@@ -81,6 +89,7 @@ public class Menu : MonoBehaviour
     public void MultiPlayerPlayerButton()
     {
         buttonSound.Play();
+        isQuitPanelAllow = false;
 
         menuPanel.SetActive(false);
         singelPlayerPanel.SetActive(false);
@@ -133,7 +142,8 @@ public class Menu : MonoBehaviour
 
     public void ActiveQuitPanel()
     {
-        isQuitPanelActivate = true;
+        buttonSound.Play();
+        isQuitPanelAllow = false;
 
         menuPanel.SetActive(false);
         singelPlayerPanel.SetActive(false);
@@ -146,6 +156,8 @@ public class Menu : MonoBehaviour
 
     public void AboutPanel()
     {
+        buttonSound.Play();
+        isQuitPanelAllow = false;
         menuPanel.SetActive(false);
         singelPlayerPanel.SetActive(false);
         multiPlayerPanel.SetActive(false);
@@ -175,8 +187,8 @@ public class Menu : MonoBehaviour
 
     public void BackButton()
     {
-        isQuitPanelActivate = false;
         buttonSound.Play();
+        isQuitPanelAllow = true;
 
         menuPanel.SetActive(true);
         singelPlayerPanel.SetActive(false);
