@@ -31,7 +31,7 @@ public class GameOver : MonoBehaviour
             if (GameManager.PlayersName[0] == "Player2") winPlayerText.color = Color.blue;
             if (GameManager.PlayersName[0] == "Player3") winPlayerText.color = Color.green;
             if (GameManager.PlayersName[0] == "Player4") winPlayerText.color = Color.yellow;
-            winPlayerText.text = GameManager.PlayersName[0] + " Win";
+            winPlayerText.text = GameManager.PlayersName[0].Insert(6," ") + " Win";
         }
     }
 
@@ -40,6 +40,7 @@ public class GameOver : MonoBehaviour
         if (!isGameOver)
         {
             collision.gameObject.transform.localScale = collision.gameObject.transform.localScale / 2;
+            collision.gameObject.GetComponent<Sharpner>().lightObj.SetActive(false);
             if (Menu.player == 1)
             {
                 isGameOver = true;
@@ -66,12 +67,16 @@ public class GameOver : MonoBehaviour
                         dyeSound.Play();
                         playerEliminateText.gameObject.SetActive(true);
                         isSharpnerHitEnd = true;
+                       
                         int eleminatedPlayerindex = GameManager.PlayersName.IndexOf(GameManager.PlayersName[i]);
                         GameManager.PlayersName.Remove(GameManager.PlayersName[i]);
                         GameManager.instanstiatedPlayers.Remove(GameManager.instanstiatedPlayers[i]);
+                       
                         collision.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                         collision.gameObject.GetComponent<Sharpner>().enabled = false;
+                       
                         Destroy(collision.gameObject,5f);
+
                         if(collision.transform.name == "Player1(Clone)")
                         {
                             playerEliminateText.gameObject.SetActive(true);
@@ -101,8 +106,8 @@ public class GameOver : MonoBehaviour
                             Invoke("DesableEliminatePlayerText", 1.5f);
                         }
 
-                        if (eleminatedPlayerindex > 0) GameManager.turn++;
-                        else if ((GameManager.turn <= 0) || (GameManager.turn == GameManager.PlayersName.Count) && (eleminatedPlayerindex <= 0)) GameManager.turn = 0;
+                        if ((eleminatedPlayerindex > GameManager.turn) && (GameManager.turn < (GameManager.PlayersName.Count-1))) GameManager.turn++;
+                        else if ((GameManager.turn <= 0) || (GameManager.turn == GameManager.PlayersName.Count) || (eleminatedPlayerindex >= GameManager.PlayersName.Count)) GameManager.turn = 0;
                     }
                 }
             }
@@ -133,4 +138,4 @@ public class GameOver : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-}
+} 
