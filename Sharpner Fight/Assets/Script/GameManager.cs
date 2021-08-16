@@ -16,8 +16,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject pauseScreen;
     
     [SerializeField] AudioSource buttonSound;
-    [SerializeField] AudioSource bgMusic;
-
 
     private float timer;
     [SerializeField] Text playerText;
@@ -50,8 +48,6 @@ public class GameManager : MonoBehaviour
             if (isPause) ResumeButton();
             else PauseButton();
         }
-
-        if (GameOver.isGameOver) bgMusic.Stop();
 
         if (isSharpnersInstanstiate && !GameOver.isGameOver) TurnCalculator();
     }
@@ -225,8 +221,8 @@ public class GameManager : MonoBehaviour
  
     public void PauseButton()
     {
+        BGMusic.instance.bgMusic.volume = 0.06f;
         isPause = true;
-        if (bgMusic != null) bgMusic.Pause();
         pauseScreen.SetActive(true);
         gameScreen.SetActive(false);
         Time.timeScale = 0;
@@ -234,7 +230,7 @@ public class GameManager : MonoBehaviour
 
     public void ResumeButton()
     {
-        if (bgMusic != null) bgMusic.Play();
+        BGMusic.instance.bgMusic.volume = 0.2f;
         isPause = false;
         pauseScreen.SetActive(false);
         gameScreen.SetActive(true);

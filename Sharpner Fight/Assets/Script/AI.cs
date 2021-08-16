@@ -5,8 +5,9 @@ public class AI : MonoBehaviour
     [SerializeField] Transform directionLine;
     [SerializeField] Transform forcePoint;
     [SerializeField] AudioSource slideSound;
-    [SerializeField] GameObject lightObj;
-    [SerializeField] Rigidbody2D rigidBody;
+    public GameObject lightObj;
+    public Rigidbody2D rigidBody;
+    public ParticleSystem slidePS;
     private float scale;
     public static bool playerturnFromAI;
 
@@ -31,7 +32,7 @@ public class AI : MonoBehaviour
                     if (dis >= 5)
                     {
                         rondomTargetPos = new Vector3(Random.Range(GameManager.instanstiatedPlayers[0].transform.position.x - 7, GameManager.instanstiatedPlayers[0].transform.position.x + 7), GameManager.instanstiatedPlayers[0].transform.position.y, GameManager.instanstiatedPlayers[0].transform.position.z);
-                        scale = Random.Range(2.5f, 4.1f);
+                        scale = Random.Range(2.3f, 3.8f);
                     }
                     else if (dis >= 2)
                     {
@@ -47,7 +48,7 @@ public class AI : MonoBehaviour
 
                 case 2:
                     rondomTargetPos = GameManager.instanstiatedPlayers[0].transform.position;
-                    scale = Random.Range(1.6f, 4f);
+                    scale = Random.Range(1.6f, 4.1f);
                     break;
 
                 default:
@@ -72,6 +73,7 @@ public class AI : MonoBehaviour
         lightObj.SetActive(false);
         GameManager.currentTurn = "None";
         slideSound.Play();
+        slidePS.Play();
         rigidBody.AddForce(new Vector3(forcePoint.position.x - transform.position.x, forcePoint.position.y - transform.position.y, 0) * scale * 40);
         directionLine.localScale = Vector3.zero;
         Invoke("ActivateTurn1", 1.5f);

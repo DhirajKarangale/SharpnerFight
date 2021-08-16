@@ -13,10 +13,13 @@ public class Menu : MonoBehaviour
     [SerializeField] GameObject loadingPng;
     [SerializeField] AudioSource buttonSound;
     [SerializeField] GameObject panelLight;
+    [SerializeField] GameObject exitPanelLight;
     private bool isQuitPanelAllow;
 
     private void Start()
     {
+        BGMusic.instance.bgMusic.volume = 0.2f;
+
         isQuitPanelAllow = true;
 
         menuPanel.SetActive(true);
@@ -25,6 +28,7 @@ public class Menu : MonoBehaviour
         aboutPanel.SetActive(false);
         quitPanel.SetActive(false);
         panelLight.SetActive(true);
+        exitPanelLight.SetActive(false);
     }
 
     private void Update()
@@ -49,6 +53,7 @@ public class Menu : MonoBehaviour
         aboutPanel.SetActive(false);
         quitPanel.SetActive(false);
         panelLight.SetActive(true);
+        exitPanelLight.SetActive(false);
     }
 
     public void EasyButton()
@@ -97,6 +102,7 @@ public class Menu : MonoBehaviour
         aboutPanel.SetActive(false);
         quitPanel.SetActive(false);
         panelLight.SetActive(true);
+        exitPanelLight.SetActive(false);
     }
 
     public void TwoPlayerButton()
@@ -151,6 +157,7 @@ public class Menu : MonoBehaviour
         aboutPanel.SetActive(false);
         quitPanel.SetActive(true);
         panelLight.SetActive(false);
+        exitPanelLight.SetActive(true);
     }
 
 
@@ -164,6 +171,7 @@ public class Menu : MonoBehaviour
         aboutPanel.SetActive(true);
         quitPanel.SetActive(false);
         panelLight.SetActive(false);
+        exitPanelLight.SetActive(false);
     }
 
     public void MoreGamesButton()
@@ -196,5 +204,6 @@ public class Menu : MonoBehaviour
         aboutPanel.SetActive(false);
         quitPanel.SetActive(false);
         panelLight.SetActive(true);
+        exitPanelLight.SetActive(false);
     }
 }

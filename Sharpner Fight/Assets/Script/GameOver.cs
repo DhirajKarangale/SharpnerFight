@@ -4,7 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class GameOver : MonoBehaviour
 {
-    public static bool isGameOver,isSharpnerHitEnd;
+    public static bool isGameOver, isSharpnerHitEnd;
+    private bool isAdAllow;
     
     [SerializeField] GameObject gameOverScreen;
     [SerializeField] GameObject gameScreen;
@@ -17,6 +18,8 @@ public class GameOver : MonoBehaviour
 
     private void Start()
     {
+        isAdAllow = true;
+        SetSoundToNormal();
         isGameOver = false;
         isSharpnerHitEnd = false;
     }
@@ -25,6 +28,7 @@ public class GameOver : MonoBehaviour
     {
         if(GameManager.PlayersName.Count <= 1)
         {
+            BGMusic.instance.bgMusic.volume = 0.06f;
             GameManager.instanstiatedPlayers[0].GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             gameScreen.SetActive(false);
             Invoke("SetWinScreenActive", 1);
@@ -41,10 +45,24 @@ public class GameOver : MonoBehaviour
         if (!isGameOver)
         {
             collision.gameObject.transform.localScale = collision.gameObject.transform.localScale / 2;
-            if(collision.gameObject.GetComponent<Sharpner>() != null) collision.gameObject.GetComponent<Sharpner>().lightObj.SetActive(false);
+            collision.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            collision.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+
+            if (collision.gameObject.GetComponent<Sharpner>() != null)
+            {
+                collision.gameObject.GetComponent<Sharpner>().lightObj.SetActive(false);
+                collision.gameObject.GetComponent<Sharpner>().slidePS.Stop();
+            }
 
             if (Menu.player == 1)
             {
+                if (collision.gameObject.GetComponent<AI>() != null)
+                {
+                    collision.gameObject.GetComponent<AI>().slidePS.Stop();
+                    collision.gameObject.GetComponent<AI>().lightObj.SetActive(false);
+                }
+
+                BGMusic.instance.bgMusic.volume = 0.06f;
                 isGameOver = true;
                 dyeSound.Play();
                 gameScreen.SetActive(false);
@@ -66,6 +84,9 @@ public class GameOver : MonoBehaviour
                 {
                     if (collision.transform.name == GameManager.PlayersName[i]+"(Clone)")
                     {
+                        BGMusic.instance.bgMusic.volume = 0.09f;
+                        Invoke("SetSoundToNormal", 1.5f);
+
                         dyeSound.Play();
                         playerEliminateText.gameObject.SetActive(true);
                         isSharpnerHitEnd = true;
@@ -73,7 +94,7 @@ public class GameOver : MonoBehaviour
                         int eleminatedPlayerindex = GameManager.PlayersName.IndexOf(GameManager.PlayersName[i]);
                         GameManager.PlayersName.Remove(GameManager.PlayersName[i]);
                         GameManager.instanstiatedPlayers.Remove(GameManager.instanstiatedPlayers[i]);
-                       
+
                         collision.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                         collision.gameObject.GetComponent<Sharpner>().enabled = false;
                        
@@ -108,8 +129,10 @@ public class GameOver : MonoBehaviour
                             Invoke("DesableEliminatePlayerText", 1.5f);
                         }
 
-                        if ((eleminatedPlayerindex > GameManager.turn) && (GameManager.turn < (GameManager.PlayersName.Count-1))) GameManager.turn++;
-                        else if ((GameManager.turn <= 0) || (GameManager.turn == GameManager.PlayersName.Count) || (eleminatedPlayerindex >= GameManager.PlayersName.Count)) GameManager.turn = 0;
+                        if ((eleminatedPlayerindex - GameManager.turn) == -1) GameManager.turn--;
+                        else if ((eleminatedPlayerindex > GameManager.turn) && (GameManager.turn < (GameManager.PlayersName.Count-1)) && (eleminatedPlayerindex != 0)) GameManager.turn++;
+                        else if ((GameManager.turn <= 0) || (GameManager.turn == GameManager.PlayersName.Count) || ((eleminatedPlayerindex >= GameManager.PlayersName.Count))) GameManager.turn = 0;
+                      
                     }
                 }
             }
@@ -119,6 +142,14 @@ public class GameOver : MonoBehaviour
     private void SetWinScreenActive()
     {
         gameOverScreen.SetActive(true);
+        if (isAdAllow)
+        {
+            if (Random.Range(0, 5) == 3)
+            {
+                isAdAllow = false;
+                Invoke("ShowAd", 3);
+            }
+        }
     }
 
     private void DesableEliminatePlayerText()
@@ -140,4 +171,13 @@ public class GameOver : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+    private void SetSoundToNormal()
+    {
+        BGMusic.instance.bgMusic.volume = 0.2f;
+    }
+
+    private void ShowAd()
+    {
+        ADManager.instance.ShowInterstitialAd();
+    }
 } 
