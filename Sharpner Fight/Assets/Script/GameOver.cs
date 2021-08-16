@@ -23,8 +23,9 @@ public class GameOver : MonoBehaviour
 
     private void Update()
     {
-        if(GameManager.PlayersName.Count == 1)
+        if(GameManager.PlayersName.Count <= 1)
         {
+            GameManager.instanstiatedPlayers[0].GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             gameScreen.SetActive(false);
             Invoke("SetWinScreenActive", 1);
             if (GameManager.PlayersName[0] == "Player1") winPlayerText.color = Color.red;
@@ -40,7 +41,8 @@ public class GameOver : MonoBehaviour
         if (!isGameOver)
         {
             collision.gameObject.transform.localScale = collision.gameObject.transform.localScale / 2;
-            collision.gameObject.GetComponent<Sharpner>().lightObj.SetActive(false);
+            if(collision.gameObject.GetComponent<Sharpner>() != null) collision.gameObject.GetComponent<Sharpner>().lightObj.SetActive(false);
+
             if (Menu.player == 1)
             {
                 isGameOver = true;

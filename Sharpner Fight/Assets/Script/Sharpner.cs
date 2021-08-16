@@ -5,6 +5,7 @@ public class Sharpner : MonoBehaviour
     [Header("Refrences")]
     [SerializeField] Transform directionLine;
     [SerializeField] Transform forcePoint;
+    [SerializeField] ParticleSystem slidePS;
     [SerializeField] AudioSource slideSound;
     public GameObject lightObj;
     [SerializeField] Rigidbody2D rigidBody;
@@ -15,7 +16,6 @@ public class Sharpner : MonoBehaviour
     private float scale;
 
     [Header("CollisionEffect")]
-    [SerializeField] AudioSource collideSound;
     [SerializeField] GameObject collisionEffect;
     private bool collisionEffectAllow;
 
@@ -72,6 +72,7 @@ public class Sharpner : MonoBehaviour
             lightObj.SetActive(false);
             isSharpnerTouch = false;
             GameManager.currentTurn = "None";
+            slidePS.Play();
             slideSound.Play();
             rigidBody.AddForce(new Vector3(forcePoint.position.x - transform.position.x, forcePoint.position.y - transform.position.y, 0) * 35 * scale);
             directionLine.localScale = Vector3.zero;
@@ -98,10 +99,9 @@ public class Sharpner : MonoBehaviour
     {
         if ((collision.gameObject.tag == "Sharpner") && collisionEffectAllow)
         {
+            slidePS.Stop();
             collisionEffectAllow = false;
             Destroy(Instantiate(collisionEffect, collision.GetContact(0).point, Quaternion.identity), 0.4f);
-            if (collideSound.isPlaying) collideSound.Stop();
-            collideSound.Play();
             ShakeIt();
             Invoke("AllowCollisionEffect", 1.5f);
         }

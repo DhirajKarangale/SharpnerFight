@@ -24,22 +24,23 @@ public class AI : MonoBehaviour
             lightObj.SetActive(true);
             float dis = Vector2.Distance(transform.position, GameManager.instanstiatedPlayers[0].transform.position);
             Vector3 rondomTargetPos;
+           
             switch (Menu.difficulty)
             {
                 case 1:
                     if (dis >= 5)
                     {
                         rondomTargetPos = new Vector3(Random.Range(GameManager.instanstiatedPlayers[0].transform.position.x - 7, GameManager.instanstiatedPlayers[0].transform.position.x + 7), GameManager.instanstiatedPlayers[0].transform.position.y, GameManager.instanstiatedPlayers[0].transform.position.z);
-                        scale = Random.Range(1, 4);
+                        scale = Random.Range(2.5f, 4.1f);
                     }
                     else if (dis >= 2)
                     {
-                        rondomTargetPos = new Vector3(Random.Range(GameManager.instanstiatedPlayers[0].transform.position.x - 1.5f, GameManager.instanstiatedPlayers[0].transform.position.x + 1.5f), GameManager.instanstiatedPlayers[0].transform.position.y, GameManager.instanstiatedPlayers[0].transform.position.z);
-                        scale = Random.Range(1, 3);
+                        rondomTargetPos = new Vector3(Random.Range(GameManager.instanstiatedPlayers[0].transform.position.x - 2.5f, GameManager.instanstiatedPlayers[0].transform.position.x + 2.5f), GameManager.instanstiatedPlayers[0].transform.position.y, GameManager.instanstiatedPlayers[0].transform.position.z);
+                        scale = Random.Range(2, 3);
                     }
                     else
                     {
-                        scale = 2.7f;
+                        scale = 2.2f;
                         rondomTargetPos = GameManager.instanstiatedPlayers[0].transform.position;
                     }
                     break;
