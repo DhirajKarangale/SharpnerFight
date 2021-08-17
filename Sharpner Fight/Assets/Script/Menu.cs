@@ -1,14 +1,21 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
     public static byte player;
     public static byte difficulty;
+    public static int pushForward;
+    [SerializeField] Button pushForwardButton;
+    [SerializeField] Text pushForwardButtonText;
+    [SerializeField] Text pullBackButtonText;
+    [SerializeField] Button pullBackButton;
     [SerializeField] GameObject menuPanel;
     [SerializeField] GameObject singelPlayerPanel;
     [SerializeField] GameObject multiPlayerPanel;
     [SerializeField] GameObject aboutPanel;
+    [SerializeField] GameObject changeControlPanel;
     [SerializeField] GameObject quitPanel;
     [SerializeField] GameObject loadingPng;
     [SerializeField] AudioSource buttonSound;
@@ -18,6 +25,35 @@ public class Menu : MonoBehaviour
 
     private void Start()
     {
+        pushForward = PlayerPrefs.GetInt("PushForward", 0);
+        if(pushForward == 0)
+        {
+            pushForwardButton.interactable = false;
+            pushForwardButtonText.color = Color.yellow;
+            pushForwardButtonText.text = "Selected";
+
+            pullBackButtonText.color = Color.white;
+            pullBackButtonText.text = "Select";
+            pullBackButton.interactable = true;
+        }
+        else
+        {
+            pushForwardButton.interactable = true;
+            pushForwardButtonText.color = Color.white;
+            pushForwardButtonText.text = "Select";
+
+            pullBackButtonText.color = Color.yellow;
+            pullBackButtonText.text = "Selected";
+            pullBackButton.interactable = false;
+        }
+
+        if (!PlayerPrefs.HasKey("PushForward"))
+        {
+            PlayerPrefs.SetInt("PushForward", pushForward);
+            PlayerPrefs.Save();
+            ChangeControlButton();
+        }
+
         BGMusic.instance.bgMusic.volume = 0.2f;
 
         isQuitPanelAllow = true;
@@ -54,6 +90,7 @@ public class Menu : MonoBehaviour
         quitPanel.SetActive(false);
         panelLight.SetActive(true);
         exitPanelLight.SetActive(false);
+        changeControlPanel.SetActive(false);
     }
 
     public void EasyButton()
@@ -103,6 +140,7 @@ public class Menu : MonoBehaviour
         quitPanel.SetActive(false);
         panelLight.SetActive(true);
         exitPanelLight.SetActive(false);
+        changeControlPanel.SetActive(false);
     }
 
     public void TwoPlayerButton()
@@ -158,6 +196,7 @@ public class Menu : MonoBehaviour
         quitPanel.SetActive(true);
         panelLight.SetActive(false);
         exitPanelLight.SetActive(true);
+        changeControlPanel.SetActive(false);
     }
 
 
@@ -172,6 +211,7 @@ public class Menu : MonoBehaviour
         quitPanel.SetActive(false);
         panelLight.SetActive(false);
         exitPanelLight.SetActive(false);
+        changeControlPanel.SetActive(false);
     }
 
     public void MoreGamesButton()
@@ -205,5 +245,53 @@ public class Menu : MonoBehaviour
         quitPanel.SetActive(false);
         panelLight.SetActive(true);
         exitPanelLight.SetActive(false);
+        changeControlPanel.SetActive(false);
+    }
+
+    public void PushForwardButton()
+    {
+        buttonSound.Play();
+        pushForward = 0;
+
+        pushForwardButton.interactable = false;
+        pushForwardButtonText.color = Color.yellow;
+        pushForwardButtonText.text = "Selected";
+
+        pullBackButtonText.color = Color.white;
+        pullBackButtonText.text = "Select";
+        pullBackButton.interactable = true;
+
+        PlayerPrefs.SetInt("PushForward", pushForward);
+        PlayerPrefs.Save();
+    }
+
+    public void PullBackButton()
+    {
+        buttonSound.Play();
+        pushForward = 1;
+
+        pushForwardButton.interactable = true;
+        pushForwardButtonText.color = Color.white;
+        pushForwardButtonText.text = "Select";
+
+        pullBackButtonText.color = Color.yellow;
+        pullBackButtonText.text = "Selected";
+        pullBackButton.interactable = false;
+
+        PlayerPrefs.SetInt("PushForward", pushForward);
+        PlayerPrefs.Save();
+    }
+
+    public void ChangeControlButton()
+    {
+        buttonSound.Play();
+        menuPanel.SetActive(false);
+        singelPlayerPanel.SetActive(false);
+        multiPlayerPanel.SetActive(false);
+        aboutPanel.SetActive(false);
+        quitPanel.SetActive(false);
+        panelLight.SetActive(false);
+        exitPanelLight.SetActive(false);
+        changeControlPanel.SetActive(true);
     }
 }

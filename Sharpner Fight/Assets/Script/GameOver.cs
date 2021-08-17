@@ -5,10 +5,13 @@ using UnityEngine.SceneManagement;
 public class GameOver : MonoBehaviour
 {
     public static bool isGameOver, isSharpnerHitEnd;
-    private bool isAdAllow;
+    public bool isAdAllow,isCelebrationPSAllow;
     
     [SerializeField] GameObject gameOverScreen;
     [SerializeField] GameObject gameScreen;
+    [SerializeField] GameObject celebrationPS;
+    [SerializeField] Transform celebrationPSPosition;
+    private GameObject currentCelebrationPS;
 
     [SerializeField] Text winPlayerText;
     [SerializeField] Text playerEliminateText;
@@ -18,6 +21,7 @@ public class GameOver : MonoBehaviour
 
     private void Start()
     {
+        isCelebrationPSAllow = true;
         isAdAllow = true;
         SetSoundToNormal();
         isGameOver = false;
@@ -26,17 +30,34 @@ public class GameOver : MonoBehaviour
 
     private void Update()
     {
-        if(GameManager.PlayersName.Count <= 1)
+        if(GameManager.PlayersName.Count == 1)
         {
+            if(isCelebrationPSAllow && (this.transform.name == "End (2)"))
+            {
+                isCelebrationPSAllow = false;
+                currentCelebrationPS = Instantiate(celebrationPS, celebrationPSPosition.position, celebrationPSPosition.rotation);
+            }
+           
             BGMusic.instance.bgMusic.volume = 0.06f;
+          
             GameManager.instanstiatedPlayers[0].GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            
             gameScreen.SetActive(false);
             Invoke("SetWinScreenActive", 1);
+           
             if (GameManager.PlayersName[0] == "Player1") winPlayerText.color = Color.red;
             if (GameManager.PlayersName[0] == "Player2") winPlayerText.color = Color.blue;
             if (GameManager.PlayersName[0] == "Player3") winPlayerText.color = Color.green;
             if (GameManager.PlayersName[0] == "Player4") winPlayerText.color = Color.yellow;
+            
             winPlayerText.text = GameManager.PlayersName[0].Insert(6," ") + " Win";
+        }
+        else if(GameManager.PlayersName.Count == 0)
+        {
+            BGMusic.instance.bgMusic.volume = 0.06f;
+            gameScreen.SetActive(false);
+            Invoke("SetWinScreenActive", 1);
+            winPlayerText.text = "Nobody Win this Match";
         }
     }
 
@@ -46,7 +67,7 @@ public class GameOver : MonoBehaviour
         {
             collision.gameObject.transform.localScale = collision.gameObject.transform.localScale / 2;
             collision.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            collision.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+          //  collision.gameObject.GetComponent<BoxCollider2D>().enabled = false;
 
             if (collision.gameObject.GetComponent<Sharpner>() != null)
             {
@@ -69,6 +90,12 @@ public class GameOver : MonoBehaviour
                 Invoke("SetWinScreenActive", 1);
                 if (collision.transform.name == "AI(Clone)")
                 {
+                    if (isCelebrationPSAllow)
+                    {
+                        isCelebrationPSAllow = false;
+                        currentCelebrationPS = Instantiate(celebrationPS, celebrationPSPosition.position, celebrationPSPosition.rotation);
+                    }
+
                     winPlayerText.color = Color.red;
                     winPlayerText.text = "Player 1 Win"; 
                 }
@@ -129,10 +156,10 @@ public class GameOver : MonoBehaviour
                             Invoke("DesableEliminatePlayerText", 1.5f);
                         }
 
-                        if ((eleminatedPlayerindex - GameManager.turn) == -1) GameManager.turn--;
-                        else if ((eleminatedPlayerindex > GameManager.turn) && (GameManager.turn < (GameManager.PlayersName.Count-1)) && (eleminatedPlayerindex != 0)) GameManager.turn++;
-                        else if ((GameManager.turn <= 0) || (GameManager.turn == GameManager.PlayersName.Count) || ((eleminatedPlayerindex >= GameManager.PlayersName.Count))) GameManager.turn = 0;
-                      
+                        if ((GameManager.turn > eleminatedPlayerindex) && (GameManager.turn == GameManager.PlayersName.Count)) GameManager.turn--;
+                        else if ((GameManager.turn == GameManager.PlayersName.Count) || (eleminatedPlayerindex == GameManager.PlayersName.Count)) GameManager.turn = 0;
+                        else if (GameManager.turn < eleminatedPlayerindex) GameManager.turn++;
+                        else if ((GameManager.turn == eleminatedPlayerindex) || (GameManager.turn > eleminatedPlayerindex)) return;
                     }
                 }
             }
@@ -144,7 +171,7 @@ public class GameOver : MonoBehaviour
         gameOverScreen.SetActive(true);
         if (isAdAllow)
         {
-            if (Random.Range(0, 5) == 3)
+            if (Random.Range(0, 7) == 3)
             {
                 isAdAllow = false;
                 Invoke("ShowAd", 3);
@@ -160,6 +187,7 @@ public class GameOver : MonoBehaviour
     public void RestartButton()
     {
         Time.timeScale = 1;
+        if (currentCelebrationPS != null) Destroy(currentCelebrationPS);
         buttonSound.Play();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -167,6 +195,7 @@ public class GameOver : MonoBehaviour
     public void MenuButton()
     {
         Time.timeScale = 1;
+        if (currentCelebrationPS != null) Destroy(currentCelebrationPS);
         buttonSound.Play();
         SceneManager.LoadScene(0);
     }

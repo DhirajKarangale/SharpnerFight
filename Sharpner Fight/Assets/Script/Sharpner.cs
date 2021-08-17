@@ -3,7 +3,7 @@ using UnityEngine;
 public class Sharpner : MonoBehaviour
 {
     [Header("Refrences")]
-    [SerializeField] Transform directionLine;
+    [SerializeField] Transform sharpnerBG;
     [SerializeField] Transform forcePoint;
     public ParticleSystem slidePS;
     [SerializeField] AudioSource slideSound;
@@ -31,7 +31,7 @@ public class Sharpner : MonoBehaviour
         isSharpnerTouch = false;
         mainCamera = GameObject.FindObjectOfType<Camera>();
         collisionEffectAllow = true;
-        directionLine.localScale = Vector2.zero;
+        sharpnerBG.localScale = Vector2.zero;
     }
 
     private void Update()
@@ -56,13 +56,15 @@ public class Sharpner : MonoBehaviour
                     GameOver.isSharpnerHitEnd = false;
                     isSharpnerFire = true;
                     isSharpnerTouch = true;
+
                     var dir = raycastHit.point - new Vector2(transform.position.x, transform.position.y);
                     float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                    transform.rotation = Quaternion.AngleAxis(angle + 270, Vector3.forward);
+                    if(Menu.pushForward == 0) transform.rotation = Quaternion.AngleAxis(angle - 270, Vector3.forward);
+                    else transform.rotation = Quaternion.AngleAxis(angle + 270, Vector3.forward);
 
                     scale = Vector2.Distance(transform.position, raycastHit.point) * 0.5f;
-                    scale = Mathf.Clamp(scale, 0.5f, 2.5f);
-                    directionLine.localScale = new Vector3(scale * 0.5f, scale * 0.5f, scale * 0.5f);
+                    scale = Mathf.Clamp(scale, 0.5f, 3);
+                    sharpnerBG.localScale = new Vector3(scale * 0.5f, scale * 0.5f, scale * 0.5f);
                 }
             }
         }
@@ -74,8 +76,9 @@ public class Sharpner : MonoBehaviour
             GameManager.currentTurn = "None";
             slidePS.Play();
             slideSound.Play();
-            rigidBody.AddForce(new Vector3(forcePoint.position.x - transform.position.x, forcePoint.position.y - transform.position.y, 0) * 50 * scale);
-            directionLine.localScale = Vector3.zero;
+           
+            rigidBody.AddForce(new Vector3(forcePoint.position.x - transform.position.x, forcePoint.position.y - transform.position.y, 0) * 36 * scale);
+            sharpnerBG.localScale = Vector3.zero;
             Invoke("ActivateNextPlayer", 2f);
         }
     }
