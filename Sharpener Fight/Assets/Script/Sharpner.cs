@@ -59,7 +59,7 @@ public class Sharpner : MonoBehaviour
 
                     var dir = raycastHit.point - new Vector2(transform.position.x, transform.position.y);
                     float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                    if(Menu.pushForward == 0) transform.rotation = Quaternion.AngleAxis(angle - 270, Vector3.forward);
+                    if (Menu.pushForward == 0) transform.rotation = Quaternion.AngleAxis(angle - 270, Vector3.forward);
                     else transform.rotation = Quaternion.AngleAxis(angle + 270, Vector3.forward);
 
                     scale = Vector2.Distance(transform.position, raycastHit.point) * 0.5f;
@@ -106,7 +106,7 @@ public class Sharpner : MonoBehaviour
             collisionEffectAllow = false;
             Destroy(Instantiate(collisionEffect, collision.GetContact(0).point, Quaternion.identity), 0.4f);
             ShakeIt();
-            Invoke("AllowCollisionEffect", 1.5f);
+            Invoke("AllowCollisionEffect", 1);
         }
     }
 
