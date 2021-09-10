@@ -17,7 +17,7 @@ public class Sharpner : MonoBehaviour
 
     [Header("CollisionEffect")]
     [SerializeField] GameObject collisionEffect;
-    private bool collisionEffectAllow;
+    public bool isCollisionEffectAllow;
 
     [Header("Camera Shake")]
     private Vector3 cameraInitialPosition;
@@ -26,11 +26,11 @@ public class Sharpner : MonoBehaviour
 
     private void Start()
     {
-        transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+        transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         isSharpnerFire = false;
         isSharpnerTouch = false;
         mainCamera = GameObject.FindObjectOfType<Camera>();
-        collisionEffectAllow = true;
+        isCollisionEffectAllow = true;
         sharpnerBG.localScale = Vector2.zero;
     }
 
@@ -59,7 +59,8 @@ public class Sharpner : MonoBehaviour
 
                     var dir = raycastHit.point - new Vector2(transform.position.x, transform.position.y);
                     float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                    if (Menu.pushForward == 0) transform.rotation = Quaternion.AngleAxis(angle - 270, Vector3.forward);
+                    int pushForward = PlayerPrefs.GetInt("PushForward", 0);
+                    if (pushForward == 0) transform.rotation = Quaternion.AngleAxis(angle - 270, Vector3.forward);
                     else transform.rotation = Quaternion.AngleAxis(angle + 270, Vector3.forward);
 
                     scale = Vector2.Distance(transform.position, raycastHit.point) * 0.5f;
@@ -100,19 +101,19 @@ public class Sharpner : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if ((collision.gameObject.tag == "Sharpner") && collisionEffectAllow)
+        if ((collision.gameObject.tag == "Sharpner") && isCollisionEffectAllow)
         {
             slidePS.Stop();
-            collisionEffectAllow = false;
+            isCollisionEffectAllow = false;
             Destroy(Instantiate(collisionEffect, collision.GetContact(0).point, Quaternion.identity), 0.4f);
             ShakeIt();
-            Invoke("AllowCollisionEffect", 1);
+           // Invoke("AllowCollisionEffect", 1);
         }
     }
 
-    private void AllowCollisionEffect()
+    private void OnCollisionExit2D(Collision2D collision)
     {
-        collisionEffectAllow = true;
+        isCollisionEffectAllow = true;
     }
 
     private void ShakeIt()
@@ -137,5 +138,4 @@ public class Sharpner : MonoBehaviour
         CancelInvoke("StartCameraShaking");
         mainCamera.transform.position = cameraInitialPosition;
     }
-
 }

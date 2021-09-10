@@ -4956,7 +4956,7 @@ Transform:
   m_GameObject: {fileID: 5554976049739501894}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 5554976050891399660}
   - {fileID: 7622531733323395471}
@@ -5076,7 +5076,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sharpnerBG: {fileID: 5554976050891399660}
-  dottedLine: {fileID: 5554976049762058544}
   forcePoint: {fileID: 5554976050389113823}
   slidePS: {fileID: 3281869642705258475}
   slideSound: {fileID: -8771236447490141717}

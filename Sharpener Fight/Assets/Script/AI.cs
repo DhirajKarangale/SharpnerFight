@@ -64,7 +64,6 @@ public class AI : MonoBehaviour
             directionLine.localScale = new Vector3(scale * 0.3f, scale * 0.3f, scale * 0.3f);
 
             Invoke("AddForceComSharpner", 0.5f);
-
         }
     }
 
@@ -83,5 +82,10 @@ public class AI : MonoBehaviour
     {
         GameManager.currentTurn = GameManager.PlayersName[1];
         playerturnFromAI = true;
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        slidePS.Stop();
     }
 }

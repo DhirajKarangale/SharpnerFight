@@ -17,7 +17,7 @@ MonoBehaviour:
   m_TransparencySortMode: 0
   m_TransparencySortAxis: {x: 0, y: 1, z: 0}
   m_HDREmulationScale: 1
-  m_LightRenderTextureScale: 0.5
+  m_LightRenderTextureScale: 0.1
   m_LightBlendStyles:
   - name: Multiply
     maskTextureChannel: 0
@@ -31,11 +31,11 @@ MonoBehaviour:
   - name: Additive with Mask
     maskTextureChannel: 1
     blendMode: 0
-  m_UseDepthStencilBuffer: 1
+  m_UseDepthStencilBuffer: 0
   m_UseCameraSortingLayersTexture: 0
   m_CameraSortingLayersTextureBound: -1
   m_CameraSortingLayerDownsamplingMethod: 0
-  m_MaxLightRenderTextureCount: 16
+  m_MaxLightRenderTextureCount: 10
   m_MaxShadowRenderTextureCount: 1
   m_ShapeLightShader: {fileID: 4800000, guid: d79e1c784eaf80c4585c0be7391f757a, type: 3}
   m_ShapeLightVolumeShader: {fileID: 4800000, guid: 7e60080c8cd24a2468cb08b4bfee5606, type: 3}

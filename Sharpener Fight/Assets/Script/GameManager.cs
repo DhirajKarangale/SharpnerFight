@@ -25,6 +25,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] Text difficuiltyTextInGameOver;
     [SerializeField] GameObject timerText;
 
+    [SerializeField] Button pushForwardButton;
+    [SerializeField] Button pullBackButton;
+    [SerializeField] Text pushForwardButtonText;
+    [SerializeField] Text pullBackButtonText;
+    private int pushForward;
+
     private bool isPause,isSharpnersInstanstiate;
         
 
@@ -38,6 +44,8 @@ public class GameManager : MonoBehaviour
         turn = 0;
         InstanstiatePlayer();
         Stats();
+
+        ControllerButtonSet();
     }
 
     private void Update()
@@ -235,5 +243,66 @@ public class GameManager : MonoBehaviour
         pauseScreen.SetActive(false);
         gameScreen.SetActive(true);
         Time.timeScale = 1;
+    }
+
+
+
+    private void ControllerButtonSet()
+    {
+        pushForward = PlayerPrefs.GetInt("PushForward", 0);
+        if (pushForward == 0)
+        {
+            pushForwardButton.interactable = false;
+            pushForwardButtonText.color = Color.yellow;
+            pushForwardButtonText.text = "Selected";
+
+            pullBackButtonText.color = Color.white;
+            pullBackButtonText.text = "Select";
+            pullBackButton.interactable = true;
+        }
+        else
+        {
+            pushForwardButton.interactable = true;
+            pushForwardButtonText.color = Color.white;
+            pushForwardButtonText.text = "Select";
+
+            pullBackButtonText.color = Color.yellow;
+            pullBackButtonText.text = "Selected";
+            pullBackButton.interactable = false;
+        }
+    }
+
+    public void PushForwardButton()
+    {
+        buttonSound.Play();
+        pushForward = 0;
+
+        pushForwardButton.interactable = false;
+        pushForwardButtonText.color = Color.yellow;
+        pushForwardButtonText.text = "Selected";
+
+        pullBackButtonText.color = Color.white;
+        pullBackButtonText.text = "Select";
+        pullBackButton.interactable = true;
+
+        PlayerPrefs.SetInt("PushForward", pushForward);
+        PlayerPrefs.Save();
+    }
+
+    public void PullBackButton()
+    {
+        buttonSound.Play();
+        pushForward = 1;
+
+        pushForwardButton.interactable = true;
+        pushForwardButtonText.color = Color.white;
+        pushForwardButtonText.text = "Select";
+
+        pullBackButtonText.color = Color.yellow;
+        pullBackButtonText.text = "Selected";
+        pullBackButton.interactable = false;
+
+        PlayerPrefs.SetInt("PushForward", pushForward);
+        PlayerPrefs.Save();
     }
 }
