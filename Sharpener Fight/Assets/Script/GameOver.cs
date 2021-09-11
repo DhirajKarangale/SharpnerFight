@@ -5,13 +5,11 @@ using UnityEngine.SceneManagement;
 public class GameOver : MonoBehaviour
 {
     public static bool isGameOver, isSharpnerHitEnd;
-    public bool isAdAllow,isCelebrationPSAllow;
+    private bool isAdAllow;
     
     [SerializeField] GameObject gameOverScreen;
     [SerializeField] GameObject gameScreen;
-    [SerializeField] GameObject celebrationPS;
-    [SerializeField] Transform celebrationPSPosition;
-    private GameObject currentCelebrationPS;
+    [SerializeField] ParticleSystem celebrationPS;
 
     [SerializeField] Text winPlayerText;
     [SerializeField] Text playerEliminateText;
@@ -21,44 +19,17 @@ public class GameOver : MonoBehaviour
 
     private void Start()
     {
-        isCelebrationPSAllow = true;
+        celebrationPS.Stop();
         isAdAllow = true;
-        SetSoundToNormal();
         isGameOver = false;
         isSharpnerHitEnd = false;
+        SetSoundToNormal();
     }
 
     private void Update()
     {
-        if(GameManager.PlayersName.Count == 1)
-        {
-            if(isCelebrationPSAllow && (this.transform.name == "End (2)"))
-            {
-                isCelebrationPSAllow = false;
-                currentCelebrationPS = Instantiate(celebrationPS, celebrationPSPosition.position, celebrationPSPosition.rotation);
-            }
-           
-            BGMusic.instance.bgMusic.volume = 0.06f;
-          
-            GameManager.instanstiatedPlayers[0].GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            
-            gameScreen.SetActive(false);
-            Invoke("SetWinScreenActive", 1);
-           
-            if (GameManager.PlayersName[0] == "Player1") winPlayerText.color = Color.red;
-            if (GameManager.PlayersName[0] == "Player2") winPlayerText.color = Color.blue;
-            if (GameManager.PlayersName[0] == "Player3") winPlayerText.color = Color.green;
-            if (GameManager.PlayersName[0] == "Player4") winPlayerText.color = Color.yellow;
-            
-            winPlayerText.text = GameManager.PlayersName[0].Insert(6," ") + " Win";
-        }
-        else if(GameManager.PlayersName.Count == 0)
-        {
-            BGMusic.instance.bgMusic.volume = 0.06f;
-            gameScreen.SetActive(false);
-            Invoke("SetWinScreenActive", 1);
-            winPlayerText.text = "Nobody Win this Match";
-        }
+        if (GameManager.PlayersName.Count == 1) GameOver1();
+        else if (GameManager.PlayersName.Count == 0) GameOver0();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -67,7 +38,6 @@ public class GameOver : MonoBehaviour
         {
             collision.gameObject.transform.localScale = collision.gameObject.transform.localScale / 2;
             collision.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-          //  collision.gameObject.GetComponent<BoxCollider2D>().enabled = false;
 
             if (collision.gameObject.GetComponent<Sharpner>() != null)
             {
@@ -90,19 +60,13 @@ public class GameOver : MonoBehaviour
                 Invoke("SetWinScreenActive", 1);
                 if (collision.transform.name == "AI(Clone)")
                 {
-                    if (isCelebrationPSAllow)
-                    {
-                        isCelebrationPSAllow = false;
-                        currentCelebrationPS = Instantiate(celebrationPS, celebrationPSPosition.position, celebrationPSPosition.rotation);
-                    }
+                    celebrationPS.Play();
 
-                    winPlayerText.color = Color.red;
-                    winPlayerText.text = "Player 1 Win"; 
+                    TextSetter(winPlayerText, true, Color.red, "Player 1 Win");
                 }
                 else if(collision.transform.name == "Player1(Clone)")
                 {
-                    winPlayerText.color = Color.blue;
-                    winPlayerText.text = "Com Win";
+                    TextSetter(winPlayerText, true, Color.blue, "Com Win");
                 }
             }
             else
@@ -129,31 +93,19 @@ public class GameOver : MonoBehaviour
 
                         if(collision.transform.name == "Player1(Clone)")
                         {
-                            playerEliminateText.gameObject.SetActive(true);
-                            playerEliminateText.color = Color.red;
-                            playerEliminateText.text = "Player 1 Eliminated";
-                            Invoke("DesableEliminatePlayerText", 1.5f);
+                            TextSetter(playerEliminateText, true, Color.red, "Player 1 Eliminated");
                         }
                         else if (collision.transform.name == "Player2(Clone)")
                         {
-                            playerEliminateText.gameObject.SetActive(true);
-                            playerEliminateText.color = Color.blue;
-                            playerEliminateText.text = "Player 2 Eliminated";
-                            Invoke("DesableEliminatePlayerText", 1.5f);
+                            TextSetter(playerEliminateText, true, Color.blue, "Player 2 Eliminated");
                         }
                         else if (collision.transform.name == "Player3(Clone)")
                         {
-                            playerEliminateText.gameObject.SetActive(true);
-                            playerEliminateText.color = Color.green;
-                            playerEliminateText.text = "Player 3 Eliminated";
-                            Invoke("DesableEliminatePlayerText", 1.5f);
+                            TextSetter(playerEliminateText, true, Color.green, "Player 3 Eliminated");
                         }
                         else if (collision.transform.name == "Player4(Clone)")
                         {
-                            playerEliminateText.gameObject.SetActive(true);
-                            playerEliminateText.color = Color.yellow;
-                            playerEliminateText.text = "Player 4 Eliminated";
-                            Invoke("DesableEliminatePlayerText", 1.5f);
+                            TextSetter(playerEliminateText, true, Color.yellow, "Player 4 Eliminated");
                         }
 
                         if ((GameManager.turn > eleminatedPlayerindex) && (GameManager.turn == GameManager.PlayersName.Count)) GameManager.turn--;
@@ -164,6 +116,33 @@ public class GameOver : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void GameOver1()
+    {
+        celebrationPS.Play();
+
+        BGMusic.instance.bgMusic.volume = 0.06f;
+
+        GameManager.instanstiatedPlayers[0].GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+
+        gameScreen.SetActive(false);
+        Invoke("SetWinScreenActive", 1);
+
+        if (GameManager.PlayersName[0] == "Player1") winPlayerText.color = Color.red;
+        if (GameManager.PlayersName[0] == "Player2") winPlayerText.color = Color.blue;
+        if (GameManager.PlayersName[0] == "Player3") winPlayerText.color = Color.green;
+        if (GameManager.PlayersName[0] == "Player4") winPlayerText.color = Color.yellow;
+
+        winPlayerText.text = GameManager.PlayersName[0].Insert(6, " ") + " Win";
+    }
+
+    private void GameOver0()
+    {
+        BGMusic.instance.bgMusic.volume = 0.06f;
+        gameScreen.SetActive(false);
+        Invoke("SetWinScreenActive", 1);
+        winPlayerText.text = "Nobody Win this Match";
     }
 
     private void SetWinScreenActive()
@@ -186,16 +165,16 @@ public class GameOver : MonoBehaviour
 
     public void RestartButton()
     {
+        celebrationPS.Stop();
         Time.timeScale = 1;
-        if (currentCelebrationPS != null) Destroy(currentCelebrationPS);
         buttonSound.Play();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void MenuButton()
     {
+        celebrationPS.Stop();
         Time.timeScale = 1;
-        if (currentCelebrationPS != null) Destroy(currentCelebrationPS);
         buttonSound.Play();
         SceneManager.LoadScene(0);
     }
@@ -208,5 +187,13 @@ public class GameOver : MonoBehaviour
     private void ShowAd()
     {
         ADManager.instance.ShowInterstitialAd();
+    }
+
+    private void TextSetter(Text text, bool setTextActive,Color textColor,string textWord)
+    {
+        text.gameObject.SetActive(setTextActive);
+        text.color = textColor;
+        text.text = textWord;
+        Invoke("DesableEliminatePlayerText", 1.5f);
     }
 } 

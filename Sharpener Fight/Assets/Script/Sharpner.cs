@@ -12,7 +12,6 @@ public class Sharpner : MonoBehaviour
 
     public static bool isSharpnerFire;
     private bool isSharpnerTouch;
-    private RaycastHit2D raycastHit;
     private float scale;
 
     [Header("CollisionEffect")]
@@ -44,44 +43,49 @@ public class Sharpner : MonoBehaviour
 
         if (AI.playerturnFromAI && !GameOver.isGameOver) lightObj.SetActive(true);
 
-        if (!GameOver.isGameOver && Input.GetMouseButton(0))
+        if (!GameOver.isGameOver && Input.GetMouseButton(0)) SharpenerController();
+        else if (isSharpnerTouch && !GameOver.isGameOver && Input.GetMouseButtonUp(0)) SharpenerThrow();
+    }
+
+    private void SharpenerController()
+    {
+        RaycastHit2D raycastHit;
+        raycastHit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward);
+        if (raycastHit.collider)
         {
-            raycastHit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward);
-            if (raycastHit.collider)
+            if ((raycastHit.transform.name == (GameManager.currentTurn + "(Clone)"))) isSharpnerTouch = true;
+
+            if (isSharpnerTouch)
             {
-                if ((raycastHit.transform.name == (GameManager.currentTurn + "(Clone)"))) isSharpnerTouch = true;
-               
-                if (isSharpnerTouch)
-                {
-                    GameOver.isSharpnerHitEnd = false;
-                    isSharpnerFire = true;
-                    isSharpnerTouch = true;
+                GameOver.isSharpnerHitEnd = false;
+                isSharpnerFire = true;
+                isSharpnerTouch = true;
 
-                    var dir = raycastHit.point - new Vector2(transform.position.x, transform.position.y);
-                    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                    int pushForward = PlayerPrefs.GetInt("PushForward", 0);
-                    if (pushForward == 0) transform.rotation = Quaternion.AngleAxis(angle - 270, Vector3.forward);
-                    else transform.rotation = Quaternion.AngleAxis(angle + 270, Vector3.forward);
+                var dir = raycastHit.point - new Vector2(transform.position.x, transform.position.y);
+                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                int pushForward = PlayerPrefs.GetInt("PushForward", 0);
+                if (pushForward == 0) transform.rotation = Quaternion.AngleAxis(angle - 270, Vector3.forward);
+                else transform.rotation = Quaternion.AngleAxis(angle + 270, Vector3.forward);
 
-                    scale = Vector2.Distance(transform.position, raycastHit.point) * 0.5f;
-                    scale = Mathf.Clamp(scale, 0.5f, 3);
-                    sharpnerBG.localScale = new Vector3(scale * 0.5f, scale * 0.5f, scale * 0.5f);
-                }
+                scale = Vector2.Distance(transform.position, raycastHit.point) * 0.5f;
+                scale = Mathf.Clamp(scale, 0.5f, 3);
+                sharpnerBG.localScale = new Vector3(scale * 0.5f, scale * 0.5f, scale * 0.5f);
             }
         }
-        else if (isSharpnerTouch && !GameOver.isGameOver && Input.GetMouseButtonUp(0))
-        {
-            AI.playerturnFromAI = false;
-            lightObj.SetActive(false);
-            isSharpnerTouch = false;
-            GameManager.currentTurn = "None";
-            slidePS.Play();
-            slideSound.Play();
-           
-            rigidBody.AddForce(new Vector3(forcePoint.position.x - transform.position.x, forcePoint.position.y - transform.position.y, 0) * 36 * scale);
-            sharpnerBG.localScale = Vector3.zero;
-            Invoke("ActivateNextPlayer", 2f);
-        }
+    }
+
+    private void SharpenerThrow()
+    {
+        AI.playerturnFromAI = false;
+        lightObj.SetActive(false);
+        isSharpnerTouch = false;
+        GameManager.currentTurn = "None";
+        slidePS.Play();
+        slideSound.Play();
+
+        rigidBody.AddForce(new Vector3(forcePoint.position.x - transform.position.x, forcePoint.position.y - transform.position.y, 0) * 39 * scale);
+        sharpnerBG.localScale = Vector3.zero;
+        Invoke("ActivateNextPlayer", 2f);
     }
 
     private void ActivateNextPlayer()

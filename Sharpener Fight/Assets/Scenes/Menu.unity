@@ -210,14 +210,14 @@ MonoBehaviour:
       - m_Target: {fileID: 1006114346}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: PullBackButton
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &105532036
 MonoBehaviour:
@@ -359,7 +359,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 151638592}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -21.540775, y: 3.653903, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3104,9 +3104,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushForwardButton: {fileID: 1633014821}
+  pullBackButton: {fileID: 105532035}
   pushForwardButtonText: {fileID: 924442814}
   pullBackButtonText: {fileID: 1588753422}
-  pullBackButton: {fileID: 105532035}
   menuPanel: {fileID: 1349559087}
   singelPlayerPanel: {fileID: 476277396}
   multiPlayerPanel: {fileID: 290804678}
@@ -3114,9 +3114,9 @@ MonoBehaviour:
   changeControlPanel: {fileID: 280061665}
   quitPanel: {fileID: 284946720}
   loadingPng: {fileID: 571793008}
-  buttonSound: {fileID: 1557252769}
   panelLight: {fileID: 1622039864}
   exitPanelLight: {fileID: 1467144532}
+  buttonSound: {fileID: 1557252769}
 --- !u!1 &1056281513
 GameObject:
   m_ObjectHideFlags: 0
@@ -3815,14 +3815,14 @@ MonoBehaviour:
       - m_Target: {fileID: 1006114346}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: BackButton
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1156103731
 MonoBehaviour:
@@ -4372,14 +4372,14 @@ MonoBehaviour:
       - m_Target: {fileID: 1006114346}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: BackButton
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1243235343
 MonoBehaviour:
@@ -4796,14 +4796,14 @@ MonoBehaviour:
       - m_Target: {fileID: 1006114346}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: BackButton
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1387255355
 MonoBehaviour:
@@ -6610,14 +6610,14 @@ MonoBehaviour:
       - m_Target: {fileID: 1006114346}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: PushForwardButton
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1633014822
 MonoBehaviour:
@@ -6743,14 +6743,14 @@ MonoBehaviour:
       - m_Target: {fileID: 1006114346}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: BackButton
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1700149302
 MonoBehaviour:
@@ -7706,14 +7706,14 @@ MonoBehaviour:
       - m_Target: {fileID: 1006114346}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: BackButton
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1992460465
 MonoBehaviour:

@@ -4,78 +4,49 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    public static byte player;
-    public static byte difficulty;
-    public static int pushForward;
+    [Header("Button")]
     [SerializeField] Button pushForwardButton;
+    [SerializeField] Button pullBackButton;
+
+    [Header("Text")]
     [SerializeField] Text pushForwardButtonText;
     [SerializeField] Text pullBackButtonText;
-    [SerializeField] Button pullBackButton;
+
+    [Header("Panel")]
     [SerializeField] GameObject menuPanel;
     [SerializeField] GameObject singelPlayerPanel;
     [SerializeField] GameObject multiPlayerPanel;
     [SerializeField] GameObject aboutPanel;
     [SerializeField] GameObject changeControlPanel;
     [SerializeField] GameObject quitPanel;
+
+    [Header("Other")]
     [SerializeField] GameObject loadingPng;
-    [SerializeField] AudioSource buttonSound;
     [SerializeField] GameObject panelLight;
     [SerializeField] GameObject exitPanelLight;
+    [SerializeField] AudioSource buttonSound;
     private bool isQuitPanelAllow;
+    public static byte player;
+    public static byte difficulty;
 
     private void Start()
     {
-        pushForward = PlayerPrefs.GetInt("PushForward", 0);
-        if(pushForward == 0)
-        {
-            pushForwardButton.interactable = false;
-            pushForwardButtonText.color = Color.yellow;
-            pushForwardButtonText.text = "Selected";
-
-            pullBackButtonText.color = Color.white;
-            pullBackButtonText.text = "Select";
-            pullBackButton.interactable = true;
-        }
-        else
-        {
-            pushForwardButton.interactable = true;
-            pushForwardButtonText.color = Color.white;
-            pushForwardButtonText.text = "Select";
-
-            pullBackButtonText.color = Color.yellow;
-            pullBackButtonText.text = "Selected";
-            pullBackButton.interactable = false;
-        }
-
-        if (!PlayerPrefs.HasKey("PushForward"))
-        {
-            PlayerPrefs.SetInt("PushForward", pushForward);
-            PlayerPrefs.Save();
-            ChangeControlButton();
-        }
-
+        ControlInitialSetup();
+       
         BGMusic.instance.bgMusic.volume = 0.2f;
 
-        isQuitPanelAllow = true;
-
-        menuPanel.SetActive(true);
-        singelPlayerPanel.SetActive(false);
-        multiPlayerPanel.SetActive(false);
-        aboutPanel.SetActive(false);
-        quitPanel.SetActive(false);
-        panelLight.SetActive(true);
-        exitPanelLight.SetActive(false);
+        BackButton(false);
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isQuitPanelAllow) ActiveQuitPanel();
-            else BackButton();
+            else BackButton(true);
         }
     }
-     
+  
 
     public void SinglePlayerButton()
     {
@@ -233,9 +204,9 @@ public class Menu : MonoBehaviour
     }
 
 
-    public void BackButton()
+    public void BackButton(bool isButtonSoundPlay)
     {
-        buttonSound.Play();
+        if (isButtonSoundPlay) buttonSound.Play();
         isQuitPanelAllow = true;
 
         menuPanel.SetActive(true);
@@ -246,40 +217,6 @@ public class Menu : MonoBehaviour
         panelLight.SetActive(true);
         exitPanelLight.SetActive(false);
         changeControlPanel.SetActive(false);
-    }
-
-    public void PushForwardButton()
-    {
-        buttonSound.Play();
-        pushForward = 0;
-
-        pushForwardButton.interactable = false;
-        pushForwardButtonText.color = Color.yellow;
-        pushForwardButtonText.text = "Selected";
-
-        pullBackButtonText.color = Color.white;
-        pullBackButtonText.text = "Select";
-        pullBackButton.interactable = true;
-
-        PlayerPrefs.SetInt("PushForward", pushForward);
-        PlayerPrefs.Save();
-    }
-
-    public void PullBackButton()
-    {
-        buttonSound.Play();
-        pushForward = 1;
-
-        pushForwardButton.interactable = true;
-        pushForwardButtonText.color = Color.white;
-        pushForwardButtonText.text = "Select";
-
-        pullBackButtonText.color = Color.yellow;
-        pullBackButtonText.text = "Selected";
-        pullBackButton.interactable = false;
-
-        PlayerPrefs.SetInt("PushForward", pushForward);
-        PlayerPrefs.Save();
     }
 
     public void ChangeControlButton()
@@ -293,5 +230,42 @@ public class Menu : MonoBehaviour
         panelLight.SetActive(false);
         exitPanelLight.SetActive(false);
         changeControlPanel.SetActive(true);
+    }
+
+    public void PushForwardButton(bool isButtonSoundPlay)
+    {
+        if (isButtonSoundPlay) buttonSound.Play();
+
+        Controlbutton(pushForwardButton, false, pushForwardButtonText, Color.yellow, "Selected");
+        Controlbutton(pullBackButton, true, pullBackButtonText, Color.white, "Select");
+
+        PlayerPrefs.SetInt("PushForward", 0);
+        PlayerPrefs.Save();
+    }
+
+    public void PullBackButton(bool isButtonSoundPlay)
+    {
+        if (isButtonSoundPlay) buttonSound.Play();
+
+        Controlbutton(pushForwardButton, true, pushForwardButtonText, Color.white, "Select");
+        Controlbutton(pullBackButton, false, pullBackButtonText, Color.yellow, "Selected");
+
+        PlayerPrefs.SetInt("PushForward", 1);
+        PlayerPrefs.Save();
+    }
+
+    private void ControlInitialSetup()
+    {
+        if (PlayerPrefs.GetInt("PushForward", 0) == 0) PushForwardButton(false);
+        else PullBackButton(false);
+
+        if (!PlayerPrefs.HasKey("PushForward")) ChangeControlButton();
+    }
+
+    private void Controlbutton(Button button, bool isInteractable, Text buttonText , Color textColor,string textWord)
+    {
+        button.interactable = isInteractable;
+        buttonText.color = textColor;
+        buttonText.text = textWord;
     }
 }

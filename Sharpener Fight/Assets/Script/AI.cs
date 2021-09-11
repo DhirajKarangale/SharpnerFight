@@ -22,48 +22,52 @@ public class AI : MonoBehaviour
 
         if ((Menu.player == 1) && (GameManager.currentTurn == GameManager.PlayersName[0]) && !GameOver.isGameOver)
         {
-            lightObj.SetActive(true);
-            float dis = Vector2.Distance(transform.position, GameManager.instanstiatedPlayers[0].transform.position);
-            Vector3 rondomTargetPos;
-           
-            switch (Menu.difficulty)
-            {
-                case 1:
-                    if (dis >= 5)
-                    {
-                        rondomTargetPos = new Vector3(Random.Range(GameManager.instanstiatedPlayers[0].transform.position.x - 7, GameManager.instanstiatedPlayers[0].transform.position.x + 7), GameManager.instanstiatedPlayers[0].transform.position.y, GameManager.instanstiatedPlayers[0].transform.position.z);
-                        scale = Random.Range(2.3f, 3.8f);
-                    }
-                    else if (dis >= 2)
-                    {
-                        rondomTargetPos = new Vector3(Random.Range(GameManager.instanstiatedPlayers[0].transform.position.x - 2.5f, GameManager.instanstiatedPlayers[0].transform.position.x + 2.5f), GameManager.instanstiatedPlayers[0].transform.position.y, GameManager.instanstiatedPlayers[0].transform.position.z);
-                        scale = Random.Range(2, 3);
-                    }
-                    else
-                    {
-                        scale = 2.2f;
-                        rondomTargetPos = GameManager.instanstiatedPlayers[0].transform.position;
-                    }
-                    break;
+            AIController(); 
+        }
+    }
 
-                case 2:
-                    rondomTargetPos = GameManager.instanstiatedPlayers[0].transform.position;
-                    scale = Random.Range(1.6f, 4.1f);
-                    break;
+    private void AIController()
+    {
+        lightObj.SetActive(true);
 
-                default:
-                    rondomTargetPos = GameManager.instanstiatedPlayers[0].transform.position;
-                    scale = 4.5f;
-                    break;
-            }
+        Vector3 dir = Difficuilty() - transform.position;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
 
-            Vector3 dir = rondomTargetPos - transform.position;
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle + 90, Vector3.forward);
-            
-            directionLine.localScale = new Vector3(scale * 0.3f, scale * 0.3f, scale * 0.3f);
+        directionLine.localScale = new Vector3(scale * 0.3f, scale * 0.3f, scale * 0.3f);
 
-            Invoke("AddForceComSharpner", 0.5f);
+        Invoke("AddForceComSharpner", 0.5f);
+    }
+
+    private Vector3 Difficuilty()
+    {
+        switch (Menu.difficulty)
+        {
+            case 1:
+                float dis = Vector2.Distance(transform.position, GameManager.instanstiatedPlayers[0].transform.position);
+                if (dis >= 5)
+                {
+                    scale = Random.Range(2.3f, 3.8f);
+                    return new Vector3(Random.Range(GameManager.instanstiatedPlayers[0].transform.position.x - 7, GameManager.instanstiatedPlayers[0].transform.position.x + 7), GameManager.instanstiatedPlayers[0].transform.position.y, GameManager.instanstiatedPlayers[0].transform.position.z);
+                }
+                else if (dis >= 2)
+                {
+                    scale = Random.Range(2, 3);
+                    return new Vector3(Random.Range(GameManager.instanstiatedPlayers[0].transform.position.x - 2.5f, GameManager.instanstiatedPlayers[0].transform.position.x + 2.5f), GameManager.instanstiatedPlayers[0].transform.position.y, GameManager.instanstiatedPlayers[0].transform.position.z);
+                }
+                else
+                {
+                    scale = 2.2f;
+                    return GameManager.instanstiatedPlayers[0].transform.position;
+                }
+
+            case 2:
+                scale = Random.Range(1.6f, 4.1f);
+                return GameManager.instanstiatedPlayers[0].transform.position;
+
+            default:
+                scale = 4.5f;
+                return GameManager.instanstiatedPlayers[0].transform.position;
         }
     }
 
