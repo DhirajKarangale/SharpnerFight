@@ -258,8 +258,6 @@ public class Menu : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("PushForward", 0) == 0) PushForwardButton(false);
         else PullBackButton(false);
-
-        if (!PlayerPrefs.HasKey("PushForward")) ChangeControlButton();
     }
 
     private void Controlbutton(Button button, bool isInteractable, Text buttonText , Color textColor,string textWord)
